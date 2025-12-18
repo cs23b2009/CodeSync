@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://codesync-xgdu.onrender.com"),
   title: "CodeSync Pro - Competitive Programming Analytics",
   description: "Advanced analytics and performance tracking for competitive programmers across multiple platforms",
   keywords: "competitive programming, contests, codeforces, leetcode, codechef, analytics, performance tracking",
@@ -38,7 +39,7 @@ export default function RootLayout({
             storageKey="codesync-pro-theme"
           >
             {children}
-            <Toaster 
+            <Toaster
               position="top-right"
               toastOptions={{
                 duration: 4000,
