@@ -1,12 +1,14 @@
 import { Contest } from "@/types/contest";
-import { baseUrl } from "@/lib/constant";
+import { fetchCodeChefContests } from "@/services/codechef";
+import { fetchCodeForcesContests } from "@/services/codeforces";
+import { fetchLeetCodeContests } from "@/services/leetcode";
+
 export async function GET() {
   try {
-
     const [codechefData, codeforcesData, leetcodeData] = await Promise.all([
-      fetch(`${baseUrl}/codechef`).then((res) => res.json()),
-      fetch(`${baseUrl}/codeforces`).then((res) => res.json()),
-      fetch(`${baseUrl}/leetcode`).then((res) => res.json()),
+      fetchCodeChefContests(),
+      fetchCodeForcesContests(),
+      fetchLeetCodeContests(),
     ]);
 
     const sortByStartTime = (a: Contest, b: Contest) =>

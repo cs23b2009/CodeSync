@@ -1,92 +1,10 @@
-import { Contest } from "@/types/contest";
-
-interface CodeForcesContests {
-  id: number;
-  name: string;
-  phase: string;
-  durationSeconds: number;
-  startTimeSeconds: number;
-}
+import { fetchCodeForcesContests } from "@/services/codeforces";
 
 export async function GET() {
   try {
-    const response = await fetch("https://codeforces.com/api/contest.list");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    const result = data.result;
+    const contests = await fetchCodeForcesContests();
 
-    const futureContests = result.filter(
-      (contest: CodeForcesContests) => contest.phase === "BEFORE"
-    );
-
-    const presentContests = result.filter(
-      (contest: CodeForcesContests) => contest.phase === "CODING"
-    );
-
-    const pastContests = result
-      .filter((contest: CodeForcesContests) => contest.phase === "FINISHED")
-      .slice(0, 50);
-
-    const getFormattedContest = (
-      contest: CodeForcesContests,
-      status: string
-    ) => {
-      const isoDate = new Date(contest.startTimeSeconds * 1000).toISOString();
-      return {
-        id: contest.id,
-        platform: "CodeForces",
-        status: status,
-        name: contest.name,
-        startTime: isoDate,
-        startTimeISO: isoDate,
-        duration: contest.durationSeconds / 3600 + " hours",
-        href: `https://codeforces.com/contest/${Number(contest.id)}`,
-      };
-    };
-
-    const formattedContests: Contest[] = [
-      ...futureContests.map((contest: CodeForcesContests) =>
-        getFormattedContest(contest, "upcoming")
-      ),
-      ...presentContests.map((contest: CodeForcesContests) =>
-        getFormattedContest(contest, "ongoing")
-      ),
-      ...pastContests.map((contest: CodeForcesContests) =>
-        getFormattedContest(contest, "completed")
-      ),
-    ];
-
-
-    const sortedUpcoming = formattedContests
-      .filter((contest) => contest.status === "upcoming")
-      .sort(
-        (a, b) =>
-          new Date(a.startTimeISO).getTime() - new Date(b.startTimeISO).getTime()
-      );
-
-    const sortedOngoing = formattedContests
-      .filter((contest) => contest.status === "ongoing")
-      .sort(
-        (a, b) =>
-          new Date(a.startTimeISO).getTime() - new Date(b.startTimeISO).getTime()
-      );
-
-    const sortedCompleted = formattedContests
-      .filter((contest) => contest.status === "completed")
-      .sort(
-        (a, b) =>
-          new Date(a.startTimeISO).getTime() - new Date(b.startTimeISO).getTime()
-      );
-
-    const allSortedContests = [
-      ...sortedUpcoming,
-      ...sortedOngoing,
-      ...sortedCompleted,
-    ];
-
-    return new Response(JSON.stringify(allSortedContests), {
+    return new Response(JSON.stringify(contests), {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, s-maxage=300",
