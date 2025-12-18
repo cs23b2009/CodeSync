@@ -1,8 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Contest } from '@/types/contest';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+import { baseUrl } from '@/lib/constant';
 
 export function useContests(platform?: string, searchQuery?: string) {
   return useQuery({
@@ -12,7 +11,7 @@ export function useContests(platform?: string, searchQuery?: string) {
       if (platform) params.append('platform', platform);
       if (searchQuery) params.append('search', searchQuery);
 
-      const response = await axios.get(`${API_BASE_URL}/api/contests?${params}`);
+      const response = await axios.get(`${baseUrl}/api/contests?${params}`);
       return response.data;
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
@@ -25,7 +24,7 @@ export function useBookmarks() {
   return useQuery({
     queryKey: ['bookmarks'],
     queryFn: async (): Promise<Contest[]> => {
-      const response = await axios.get(`${API_BASE_URL}/api/bookmark`);
+      const response = await axios.get(`${baseUrl}/api/bookmark`);
       return response.data;
     },
     staleTime: 1 * 60 * 1000, // 1 minute
@@ -40,7 +39,7 @@ export function useToggleBookmark() {
       const method = isBookmarked ? 'DELETE' : 'POST';
       const response = await axios({
         method,
-        url: `${API_BASE_URL}/api/bookmark`,
+        url: `${baseUrl}/api/bookmark`,
         data: contest,
       });
       return response.data;
@@ -68,7 +67,7 @@ export function useContestReminder() {
       platformName: string;
       contestLink: string;
     }) => {
-      const response = await axios.post(`${API_BASE_URL}/api/reminder`, reminderData);
+      const response = await axios.post(`${baseUrl}/api/reminder`, reminderData);
       return response.data;
     },
     onSuccess: () => {
