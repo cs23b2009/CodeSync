@@ -96,7 +96,7 @@ export async function fetchLeetCodeContests(): Promise<Contest[]> {
 
             return {
                 id: contest.titleSlug || `leetcode-contest-${startTimeMs}`,
-                platform: "LeetCode",
+                platform: "leetcode",
                 status,
                 name: contest.title,
                 startTime: isoDate,

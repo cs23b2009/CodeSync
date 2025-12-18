@@ -39,7 +39,7 @@ export async function fetchCodeForcesContests(): Promise<Contest[]> {
             const isoDate = new Date(contest.startTimeSeconds * 1000).toISOString();
             return {
                 id: contest.id,
-                platform: "CodeForces",
+                platform: "codeforces",
                 status: status,
                 name: contest.name,
                 startTime: isoDate,

@@ -28,7 +28,7 @@ export async function fetchCodeChefContests(): Promise<Contest[]> {
 
         const getFormattedContest = (contest: CodeChefContest, status: string) => ({
             id: contest.contest_code,
-            platform: "CodeChef",
+            platform: "codechef",
             status: status,
             name: contest.contest_name,
             startTime: contest.contest_start_date_iso,
