@@ -4,6 +4,8 @@
 
 CodeSync Pro is a comprehensive analytics and performance tracking platform designed for competitive programmers. It provides real-time insights, intelligent recommendations, and detailed performance analytics across multiple programming platforms.
 
+Live Demo: [https://codesync-xgdu.onrender.com/](https://codesync-xgdu.onrender.com/)
+
 ## 🚀 Key Features
 
 ### 🎯 **Smart Contest Management**
