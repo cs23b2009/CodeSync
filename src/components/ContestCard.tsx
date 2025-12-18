@@ -195,7 +195,7 @@ export default function ContestCard({
                 <div className="space-y-2 mb-6 text-gray-500 dark:text-gray-400 text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    <span>{formatDateClient(contest.startTime, { includeTime: true })}</span>
+                    <span>{formatDateClient(contest.startTime)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />

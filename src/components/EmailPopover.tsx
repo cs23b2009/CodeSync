@@ -28,7 +28,7 @@ interface EmailPopoverProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     form: UseFormReturn<FormData>;
     onSubmit: (values: FormData) => void;
-    setContestSelected: Dispatch<SetStateAction<SelectedContest | undefined>>
+    setContestSelected: Dispatch<SetStateAction<SelectedContest | null>>
 }
 
 export default function EmailPopover({
@@ -42,14 +42,7 @@ export default function EmailPopover({
         await onSubmit(values);
         setIsModalOpen(false);
         form.reset();
-        setContestSelected({
-            contestName: "",
-            duration: "",
-            contestLink: "",
-            platformName: "",
-            startTime: "",
-            startTimeISO: ""
-        });
+        setContestSelected(null);
     };
 
     return (
