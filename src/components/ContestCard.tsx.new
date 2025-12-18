@@ -1,0 +1,262 @@
+"use client";
+
+import { useState } from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Bookmark, Calendar, ExternalLink, Mail } from "lucide-react";
+
+import { Contest } from "@/types/contest";
+import { formatDateClient } from "@/lib/formatDateClient";
+import { baseUrl } from "@/lib/constant";
+import EmailPopover from "./EmailPopover";
+
+// Form schema for email reminders
+const formSchema = z.object({
+  name: z.string().min(2).max(50),
+  email: z.string().email()
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+export interface SelectedContest {
+  contestName: string;
+  startTime: string;
+  startTimeISO: string;
+  duration: string;
+  platformName: string;
+  contestLink: string;
+}
+
+interface ContestCardProps {
+  contests: Contest[];
+  isBookmarksPage?: boolean;
+  bookmarkedContestIds?: string[];
+  isLoading?: boolean;
+  onBookmarkChange?: (contest: Contest, isBookmarked: boolean) => void;
+}
+
+// Skeleton Loader Component
+const ContestCardSkeleton = () => (
+  <div className="space-y-4 w-full max-w-4xl mx-auto">
+    {[1, 2, 3].map((i) => (
+      <div key={`skeleton-${i}`} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div className="p-5">
+          <div className="flex justify-between items-start">
+            <div className="animate-pulse">
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            </div>
+            <div className="h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+          
+          <div className="mt-4 flex items-center space-x-2">
+            <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+          </div>
+          
+          <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+            <div className="h-9 bg-gray-200 dark:bg-gray-700 rounded-lg w-24"></div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+export default function ContestCard({
+  contests = [],
+  isBookmarksPage = false,
+  bookmarkedContestIds = [],
+  isLoading = false,
+  onBookmarkChange,
+}: ContestCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedContest, setSelectedContest] = useState<SelectedContest | null>(null);
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+  });
+
+  const handleBookmark = async (e: React.MouseEvent, contest: Contest) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const contestId = contest.id || contest.name;
+    const isBookmarked = bookmarkedContestIds.includes(contestId.toString());
+    
+    // Optimistic update
+    if (onBookmarkChange) {
+      onBookmarkChange(contest, !isBookmarked);
+    }
+    
+    try {
+      await axios({
+        method: isBookmarked ? "DELETE" : "POST",
+        url: `${baseUrl}/api/bookmark`,
+        data: { ...contest, id: contestId },
+      });
+    } catch (error) {
+      console.error("Error handling bookmark:", error);
+      // Revert the optimistic update if the API call fails
+      if (onBookmarkChange) {
+        onBookmarkChange(contest, isBookmarked);
+      }
+    }
+  };
+
+  const handleSendReminder = (e: React.MouseEvent, contest: Contest) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    setSelectedContest({
+      contestName: contest.name,
+      startTime: contest.startTime,
+      startTimeISO: contest.startTimeISO || new Date(contest.startTime).toISOString(),
+      duration: contest.duration || 'N/A',
+      platformName: contest.platform,
+      contestLink: contest.href || '#',
+    });
+    
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = async (values: FormData) => {
+    if (!selectedContest) return;
+    
+    try {
+      await axios.post(`${baseUrl}/api/reminder`, {
+        ...values,
+        ...selectedContest,
+      });
+      
+      setIsModalOpen(false);
+      form.reset();
+    } catch (error) {
+      console.error("Error sending reminder:", error);
+    }
+  };
+
+  if (isLoading) {
+    return <ContestCardSkeleton />;
+  }
+
+  if (!contests || contests.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500 dark:text-gray-400">No contests found</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {isModalOpen && selectedContest && (
+        <EmailPopover
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          form={form}
+          onSubmit={handleSubmit}
+          setContestSelected={setSelectedContest}
+        />
+      )}
+      
+      <div className="space-y-4">
+        {contests.map((contest) => {
+          const contestId = contest.id || contest.name;
+          const isBookmarked = bookmarkedContestIds.includes(contestId.toString());
+          
+          return (
+            <div 
+              key={contestId} 
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200"
+            >
+              <div className="p-5">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1">
+                      {contest.name}
+                    </h3>
+                    <div className="mt-1 flex items-center space-x-2">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                        {contest.platform}
+                      </span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {formatDateClient(contest.startTime)}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => handleBookmark(e, contest)}
+                    className={`p-1.5 rounded-full ${
+                      isBookmarked 
+                        ? 'text-yellow-400 hover:text-yellow-500' 
+                        : 'text-gray-400 hover:text-yellow-400'
+                    } transition-colors`}
+                    aria-label={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
+                  >
+                    <Bookmark 
+                      className={`h-5 w-5 ${isBookmarked ? 'fill-current' : ''}`} 
+                    />
+                  </button>
+                </div>
+
+                <div className="mt-4 flex items-center space-x-3">
+                  <div className="flex-shrink-0">
+                    <div className="h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                      <Calendar className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      {contest.duration || 'Duration not specified'}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {formatDateClient(contest.startTime, { includeTime: true })}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+                  <div className="flex items-center space-x-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                      {contest.platform}
+                    </span>
+                    {contest.href && (
+                      <a
+                        href={contest.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink className="h-3.5 w-3.5 mr-1" />
+                        Visit
+                      </a>
+                    )}
+                  </div>
+                  
+                  <div className="flex space-x-2 w-full sm:w-auto">
+                    <button
+                      onClick={(e) => handleSendReminder(e, contest)}
+                      className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full sm:w-auto"
+                    >
+                      <Mail className="-ml-1 mr-2 h-4 w-4" />
+                      Set Reminder
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
