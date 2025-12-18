@@ -6,6 +6,8 @@ CodeSync Pro is a comprehensive analytics and performance tracking platform desi
 
 Live Demo: [https://codesync-xgdu.onrender.com/](https://codesync-xgdu.onrender.com/)
 
+![CodeSync Pro Dashboard](public/screenshots/dashboard.png)
+
 ## 🚀 Key Features
 
 ### 🎯 **Smart Contest Management**
