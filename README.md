@@ -4,29 +4,17 @@
 
 CodeSync Pro is a comprehensive analytics and performance tracking platform designed for competitive programmers. It provides real-time insights, intelligent recommendations, and detailed performance analytics across multiple programming platforms.
 
-Live Demo: [https://codesync-xgdu.onrender.com/](https://codesync-xgdu.onrender.com/)
+Live Demo: [https://codesync-xgdu.onrender.com](https://codesync-xgdu.onrender.com)
 
 ![CodeSync Pro Dashboard](public/screenshots/dashboard.png)
 
 ## 🚀 Key Features
 
-### 🎯 **Smart Contest Management**
-- Live contest tracking from Codeforces, LeetCode, CodeChef, AtCoder, and HackerRank
-- Intelligent contest recommendations based on skill level
-- Advanced filtering and search capabilities
-- Personalized contest difficulty predictions
-
-### 🔔 **Intelligent Notifications**
-- Email reminders for upcoming contests
-- Customizable notification preferences
-- Smart timing based on user timezone
-- Contest status updates (upcoming, live, completed)
-
-### 🎨 **Modern User Experience**
-- Responsive design optimized for all devices
-- Dark/Light theme with system preference detection
-- Smooth animations and micro-interactions
-- Professional dashboard-style interface
+* **Smart Tracking:** Live contests from Codeforces, LeetCode, CodeChef, and more.
+* **Intelligent Insights:** Personalized difficulty predictions and skill-based recommendations.
+* **Smart Alerts:** Automated email reminders and timezone-aware notifications.
+* **Modern UI:** Responsive, dashboard-style interface with Dark/Light mode support.
+* **Advanced Filtering:** Powerful search and status tracking (Upcoming/Live/Completed).
 
 ## 🛠 Tech Stack
 
@@ -149,19 +137,6 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - `POST /api/notifications/subscribe` - Subscribe to contest reminders
 - `PUT /api/notifications/preferences` - Update notification settings
 
-## 🎨 Design System
-
-### Color Palette
-- **Primary**: Blue gradient (#1f8dd6 to #3f51b5)
-- **Secondary**: Purple accent (#9c27b0)
-- **Success**: Green (#4caf50)
-- **Warning**: Orange (#ff9800)
-- **Error**: Red (#f44336)
-
-### Typography
-- **Headings**: Geist Sans (Bold/Semibold)
-- **Body**: Geist Sans (Regular/Medium)
-- **Code**: Geist Mono
 
 ## 🔧 Development
 
@@ -186,21 +161,6 @@ npm run test
 npm run test:e2e
 ```
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables
-3. Deploy automatically on push
-
-### Docker
-```bash
-# Build image
-docker build -t codesync-pro .
-
-# Run container
-docker run -p 3000:3000 codesync-pro
-```
 
 ## 🤝 Contributing
 
@@ -209,17 +169,6 @@ docker run -p 3000:3000 codesync-pro
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Contest data provided by platform APIs
-- UI components built with Radix UI
-- Charts powered by Recharts
-- Icons from Lucide React
 
 ---
 
