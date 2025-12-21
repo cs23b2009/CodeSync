@@ -40,18 +40,24 @@ interface ContestCardProps {
 
 // Skeleton Loader Component
 const ContestCardSkeleton = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
-    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-      <div key={`skeleton-${i}`} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 h-[300px] animate-pulse shadow-sm">
-        <div className="flex justify-between mb-4">
-          <div className="h-6 w-20 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
-          <div className="h-6 w-20 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+    {[...Array(6)].map((_, i) => (
+      <div key={i} className="p-8 bg-zinc-900/40 rounded-[2.5rem] border border-zinc-800/50 space-y-8 animate-pulse">
+        <div className="flex items-center gap-6">
+          <div className="w-16 h-16 bg-zinc-800/50 rounded-3xl" />
+          <div className="space-y-3 flex-1">
+            <div className="h-4 w-24 bg-zinc-800/50 rounded-full" />
+            <div className="h-6 w-3/4 bg-zinc-800/50 rounded-lg" />
+          </div>
         </div>
-        <div className="h-8 w-3/4 bg-gray-200 dark:bg-gray-800 rounded mb-4"></div>
-        <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-800 rounded mb-2"></div>
-        <div className="h-4 w-1/3 bg-gray-200 dark:bg-gray-800 rounded mb-8"></div>
-        <div className="h-10 w-full bg-gray-200 dark:bg-gray-800 rounded mb-3"></div>
-        <div className="h-10 w-full bg-gray-200 dark:bg-gray-800 rounded"></div>
+        <div className="space-y-4">
+          <div className="h-12 w-full bg-zinc-800/20 rounded-2xl" />
+          <div className="h-12 w-full bg-zinc-800/20 rounded-2xl" />
+        </div>
+        <div className="pt-4 border-t border-zinc-800/50 flex gap-3">
+          <div className="h-12 flex-1 bg-zinc-800/50 rounded-2xl" />
+          <div className="h-12 w-12 bg-zinc-800/50 rounded-2xl" />
+        </div>
       </div>
     ))}
   </div>
@@ -166,7 +172,7 @@ export default function ContestCard({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {contests.map((contest) => {
           const contestId = contest.id || contest.name;
           const isBookmarked = bookmarkedContestIds.includes(contestId.toString());
@@ -175,63 +181,82 @@ export default function ContestCard({
           return (
             <div
               key={contestId}
-              className="group bg-white dark:bg-[#111] border border-gray-200 dark:border-gray-800 rounded-xl p-5 flex flex-col justify-between hover:border-gray-300 dark:hover:border-gray-700 transition-colors shadow-sm dark:shadow-none"
+              className="group relative bg-zinc-950/40 border border-zinc-800/40 backdrop-blur-2xl transition-all duration-500 hover:bg-zinc-900/60 hover:border-blue-500/30 rounded-[2.5rem] hover:ring-1 hover:ring-blue-500/20 shadow-2xl h-full flex flex-col p-8 overflow-hidden"
             >
-              <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className={cn("px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 dark:bg-white text-gray-900 border border-gray-200 dark:border-gray-200 flex items-center gap-1")}>
-                    <PlatformLogo platform={contest.platform} size={16} />
-                    {platformStyle.name}
-                  </span>
-                  <span className="bg-blue-100 dark:bg-blue-600/10 text-blue-700 dark:text-blue-400 text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">
-                    Upcoming
-                  </span>
-                </div>
+              {/* Card Background Glow */}
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-blue-500/10 transition-all duration-500" />
 
-                <h3 className="text-gray-900 dark:text-white font-medium text-lg leading-snug mb-4 min-h-[3.5rem] line-clamp-2">
-                  {contest.name}
-                </h3>
-
-                <div className="space-y-2 mb-6 text-gray-500 dark:text-gray-400 text-sm">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>{formatDateClient(contest.startTime)}</span>
+              <div className="relative z-10 flex flex-col h-full">
+                {/* Header with Platform Logo */}
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="relative shrink-0">
+                    <div className="absolute -inset-1 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-3xl blur opacity-0 group-hover:opacity-40 transition-opacity" />
+                    <div className="relative w-16 h-16 bg-zinc-900 border border-zinc-800/50 rounded-3xl flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                      <PlatformLogo platform={contest.platform} size={32} />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{contest.duration}</span>
+
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        {platformStyle.name}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase bg-green-500/10 text-green-400 border border-green-500/20">
+                        Upcoming
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-black text-white line-clamp-2 leading-tight group-hover:text-blue-400 transition-colors">
+                      {contest.name}
+                    </h3>
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-3">
-                <div className="flex gap-2">
-                  <a
-                    href={contest.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 bg-blue-600 hover:bg-blue-500 text-white border border-transparent font-medium text-sm py-2 px-3 rounded-lg flex items-center justify-center gap-1 transition-all active:scale-95 shadow-lg shadow-blue-500/20"
-                  >
-                    Visit {platformStyle.name.split(' ')[0]} <ExternalLink className="w-3 h-3 ml-1" />
-                  </a>
-                  <button
-                    onClick={(e) => handleSendReminder(e, contest)}
-                    className="flex-1 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-700 font-medium text-sm py-2 px-3 rounded-lg flex items-center justify-center gap-1 transition-all active:scale-95"
-                  >
-                    Reminder <Mail className="w-3 h-3 ml-1" />
-                  </button>
+                {/* Details Section */}
+                <div className="space-y-4 flex-1">
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center gap-3 text-zinc-400 text-sm bg-zinc-900/40 p-3 rounded-2xl border border-zinc-800/50">
+                      <Calendar size={18} className="text-blue-400" />
+                      <span className="font-medium text-xs uppercase tracking-wider">{formatDateClient(contest.startTime)}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-zinc-400 text-sm bg-zinc-900/40 p-3 rounded-2xl border border-zinc-800/50">
+                      <Clock size={18} className="text-purple-400" />
+                      <span className="font-medium text-xs uppercase tracking-wider">{contest.duration}</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={(e) => handleBookmark(e, contest)}
-                    className={cn(
-                      "flex-1 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-zinc-700 font-medium text-sm py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95",
-                      isBookmarked && "text-yellow-600 dark:text-yellow-400 border-yellow-500/30 bg-yellow-50 dark:bg-yellow-400/10 hover:text-yellow-700 dark:hover:text-yellow-300"
-                    )}
-                  >
-                    Bookmark <Bookmark className={cn("w-3 h-3", isBookmarked && "fill-current")} />
-                  </button>
+                {/* Actions Footer */}
+                <div className="mt-8 space-y-3">
+                  <div className="flex gap-3">
+                    <a
+                      href={contest.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 h-12 bg-white text-black font-black rounded-2xl transition-all hover:bg-zinc-200 active:scale-95"
+                    >
+                      Enter Arena <ExternalLink size={16} />
+                    </a>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={(e) => handleSendReminder(e, contest)}
+                      className="flex-1 flex items-center justify-center gap-2 h-12 bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 hover:text-white hover:border-zinc-700 transition-all font-bold text-[10px] uppercase tracking-widest"
+                    >
+                      Remind Me <Mail size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => handleBookmark(e, contest)}
+                      className={cn(
+                        "w-12 h-12 flex items-center justify-center border rounded-2xl transition-all hover:scale-105 active:scale-95",
+                        isBookmarked
+                          ? "bg-yellow-500/10 border-yellow-500/40 text-yellow-500 shadow-lg shadow-yellow-500/10"
+                          : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-white"
+                      )}
+                    >
+                      <Bookmark size={18} className={cn(isBookmarked && "fill-current")} />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -12,30 +12,33 @@ import {
     isSameDay,
     addMonths,
     subMonths,
-    parseISO
+    parseISO,
 } from "date-fns";
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Loader2 } from "lucide-react";
-import { Contest } from "@/types/contest";
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Loader2, Info, Star } from "lucide-react";
+import { Hackathon } from "@/types/hackathon";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function ContestCalendar() {
+export default function HackathonCalendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
 
     const { data, isLoading } = useQuery({
-        queryKey: ['calendar-contests'],
+        queryKey: ['hackathons-month', currentDate.getMonth(), currentDate.getFullYear()],
         queryFn: async () => {
-            const response = await axios.get('/api/all', {
-                params: { limit: 100 }
+            const response = await axios.get('/api/hackathons/month', {
+                params: {
+                    month: currentDate.getMonth() + 1,
+                    year: currentDate.getFullYear()
+                }
             });
-            return response.data.contests as Contest[];
+            return response.data.hackathons as Hackathon[];
         }
     });
 
-    const contests = data || [];
+    const hackathons = data || [];
 
     const firstDayOfMonth = startOfMonth(currentDate);
     const lastDayOfMonth = endOfMonth(currentDate);
@@ -51,30 +54,14 @@ export default function ContestCalendar() {
     const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
     const goToToday = () => setCurrentDate(new Date());
 
-    // Platform styling helper
-    const getPlatformStyle = (platform: string) => {
-        switch (platform.toLowerCase()) {
-            case 'codeforces':
-                return "bg-amber-100 text-amber-800 dark:bg-yellow-500/20 dark:text-yellow-400 border-amber-200 dark:border-yellow-500/30";
-            case 'leetcode':
-                return "bg-orange-100 text-orange-800 dark:bg-orange-500/20 dark:text-orange-400 border-orange-200 dark:border-orange-500/30";
-            case 'codechef':
-                return "bg-stone-100 text-stone-800 dark:bg-amber-700/20 dark:text-amber-400 border-stone-200 dark:border-amber-700/30";
-            case 'atcoder':
-                return "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:border-gray-600";
-            default:
-                return "bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-400 border-blue-200 dark:border-blue-500/30";
-        }
-    };
-
     if (isLoading) {
         return (
             <div className="w-full max-w-7xl mx-auto p-12 flex flex-col justify-center items-center bg-zinc-950/40 backdrop-blur-3xl rounded-[2.5rem] border border-zinc-800/40 min-h-[600px] shadow-2xl">
                 <div className="relative">
-                    <div className="absolute -inset-8 bg-blue-500/20 blur-[60px] rounded-full animate-pulse" />
-                    <Loader2 className="w-12 h-12 animate-spin text-blue-500 relative" />
+                    <div className="absolute -inset-8 bg-indigo-500/20 blur-[60px] rounded-full animate-pulse" />
+                    <Loader2 className="w-12 h-12 animate-spin text-indigo-500 relative" />
                 </div>
-                <p className="mt-8 text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">Syncing Arena Data</p>
+                <p className="mt-8 text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">Syncing Galaxy Data</p>
             </div>
         );
     }
@@ -84,11 +71,11 @@ export default function ContestCalendar() {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-5">
-                    <div className="p-4 bg-blue-500/10 rounded-3xl border border-blue-500/20">
-                        <CalendarIcon className="w-8 h-8 text-blue-400" />
+                    <div className="p-4 bg-indigo-500/10 rounded-3xl border border-indigo-500/20">
+                        <CalendarIcon className="w-8 h-8 text-indigo-400" />
                     </div>
                     <div>
-                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em] mb-1">Contest Timeline</p>
+                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em] mb-1">Hackathon Timeline</p>
                         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
                             {format(currentDate, "MMMM yyyy")}
                         </h2>
@@ -129,13 +116,16 @@ export default function ContestCalendar() {
 
                 <div className="grid grid-cols-7 gap-px bg-zinc-800/20 border border-zinc-800/30 rounded-[2rem] overflow-hidden shadow-inner">
                     {days.map((day, dayIdx) => {
-                        const dayContests = contests.filter(c => {
-                            const cDate = parseISO(c.startTimeISO || c.startTime);
-                            return isSameDay(cDate, day);
-                        });
-
+                        // For hackathons, dates are usually ranges. Match logic might be complex.
+                        // For now, let's just show counts if we can't parse exactly yet.
                         const isCurrentMonth = isSameMonth(day, currentDate);
                         const isToday = isSameDay(day, new Date());
+
+                        const dayEvents = hackathons.filter(h => {
+                            if (!h.startDate) return false;
+                            const hStart = parseISO(h.startDate);
+                            return isSameDay(hStart, day);
+                        });
 
                         return (
                             <div
@@ -143,7 +133,7 @@ export default function ContestCalendar() {
                                 className={cn(
                                     "min-h-[140px] md:min-h-[160px] p-4 transition-all relative group bg-zinc-950/40",
                                     !isCurrentMonth && "opacity-20",
-                                    isToday && "bg-blue-500/5"
+                                    isToday && "bg-indigo-500/5"
                                 )}
                             >
                                 <div className="flex justify-between items-start mb-4">
@@ -151,7 +141,7 @@ export default function ContestCalendar() {
                                         className={cn(
                                             "w-9 h-9 flex items-center justify-center rounded-2xl text-sm font-black transition-all",
                                             isToday
-                                                ? "bg-blue-600 text-white shadow-xl shadow-blue-500/30 ring-2 ring-blue-400/20"
+                                                ? "bg-indigo-600 text-white shadow-xl shadow-indigo-600/30 ring-2 ring-indigo-400/20"
                                                 : isCurrentMonth ? "text-zinc-400 group-hover:bg-zinc-800 group-hover:text-white" : "text-zinc-700"
                                         )}
                                     >
@@ -160,25 +150,25 @@ export default function ContestCalendar() {
                                 </div>
 
                                 <div className="space-y-1.5 overflow-hidden">
-                                    {dayContests.slice(0, 3).map((contest) => (
+                                    {dayEvents.slice(0, 2).map((h, i) => (
                                         <a
-                                            key={contest.id}
-                                            href={contest.href}
+                                            key={h.id}
+                                            href={h.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={cn(
                                                 "block text-[9px] font-bold p-1.5 rounded-lg border truncate transition-all hover:scale-105",
-                                                contest.platform.toLowerCase() === 'codeforces' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
-                                                    contest.platform.toLowerCase() === 'leetcode' ? "bg-yellow-500/10 text-yellow-500 border-yellow-500/20" :
-                                                        "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                                                h.featured
+                                                    ? "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                                                    : "bg-zinc-900 text-zinc-400 border-zinc-800"
                                             )}
                                         >
-                                            <span className="opacity-60 mr-1">{format(parseISO(contest.startTimeISO || contest.startTime), "HH:mm")}</span>
-                                            {contest.name}
+                                            {h.featured && <Star size={8} className="inline mr-1 fill-amber-500" />}
+                                            {h.title}
                                         </a>
                                     ))}
-                                    {dayContests.length > 3 && (
-                                        <p className="text-[8px] text-zinc-600 font-black text-center uppercase tracking-tighter tracking-[0.2em]">+ {dayContests.length - 3} MORE</p>
+                                    {dayEvents.length > 2 && (
+                                        <p className="text-[8px] text-zinc-600 font-black text-center">+ {dayEvents.length - 2} MORE</p>
                                     )}
                                 </div>
                             </div>
@@ -190,7 +180,7 @@ export default function ContestCalendar() {
             <div className="pt-6 flex items-center justify-center gap-3">
                 <div className="h-px w-20 bg-gradient-to-r from-transparent to-zinc-800" />
                 <p className="text-[9px] text-zinc-600 font-black uppercase tracking-[0.5em]">
-                    Competitive Arena Sync
+                    Monthwise View Overload
                 </p>
                 <div className="h-px w-20 bg-gradient-to-l from-transparent to-zinc-800" />
             </div>

@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import { Toaster } from "sonner";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
             defaultTheme="dark"
             storageKey="codesync-pro-theme"
           >
+            <Navbar />
             {children}
             <Toaster
               position="top-right"
