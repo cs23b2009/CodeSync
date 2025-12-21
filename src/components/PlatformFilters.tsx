@@ -47,33 +47,20 @@ export default function PlatformFilters() {
   const fetchActiveStyles = (platform: string): string => {
     switch (platform) {
       case "codeforces":
-        return "bg-cf text-white border-cf";
+        return "bg-blue-500/20 text-blue-400 border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.3)]";
       case "codechef":
-        return "bg-cc text-white border-cc";
+        return "bg-amber-500/20 text-amber-400 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.3)]";
       case "leetcode":
-        return "bg-lc text-white border-lc";
+        return "bg-yellow-500/20 text-yellow-500 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.3)]";
       case "bookmarks":
-        return "bg-white text-gray-900 border-white";
+        return "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]";
       default:
-        return "bg-blue-600 text-white border-blue-600";
+        return "bg-blue-600 text-white border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.4)]";
     }
   };
 
   const fetchInActiveStyles = (button: any): string => {
-    if (button.isAction) return button.className;
-
-    switch (button.title.toLowerCase()) {
-      case "codeforces":
-        return "bg-cf-secondary text-cf-primary border-cf-secondary hover:bg-cf hover:text-white";
-      case "codechef":
-        return "bg-cc-secondary text-cc-primary border-cc-secondary hover:bg-cc hover:text-white";
-      case "leetcode":
-        return "bg-lc-secondary text-lc-primary border-lc-secondary hover:bg-lc hover:text-white";
-      case "bookmarks":
-        return "bg-white text-blue-600 border-white hover:bg-gray-100";
-      default:
-        return "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700";
-    }
+    return "bg-zinc-900/60 text-zinc-500 border-zinc-800/80 hover:bg-zinc-800 hover:text-white hover:border-zinc-700";
   };
 
   const createQueryString = (newPlatform: string) => {
