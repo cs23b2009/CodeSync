@@ -14,7 +14,8 @@ export default function Navbar() {
     const links = [
         { name: "Arena", href: "/", icon: Trophy },
         { name: "Hackathons", href: "/hackathons", icon: Calendar },
-        { name: "LeetCode Buddies", href: "/search", icon: Users }
+        { name: "LeetCode Buddies", href: "/search", icon: Users },
+        { name: "Portfolio Tracker", href: "/stats", icon: BarChart2 }
     ];
 
     return (

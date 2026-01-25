@@ -22,9 +22,9 @@ Live Demo: [https://codesync-xgdu.onrender.com](https://codesync-xgdu.onrender.c
 Dominate the leaderboards by never missing a match.
 -   **Unified Dashboard:** Synchronized schedules from **LeetCode, Codeforces, and CodeChef**.
 -   **Smart Editorials:** Automatic mapping of past contests to their **video solutions** for instant learning.
--   **Performance Tracking:** Visualize your rating history and contest consistency.
+-   **Performance Tracking:** Visualize your rating history and contest consistency across all platforms.
 
-### 🛠️ Pillar 2: BUILD (Hackathon Explorer)
+### 🌟 Pillar 2: BUILD (Hackathon Explorer)
 Stop solving imaginary problems. Start building real solutions.
 -   **Global Innovation Calendar:** Real-time aggregation of hackathons from around the world.
 -   **Mode Filters:** Easily find **Online** (remote-friendly) or **Offline** (local) events.
@@ -33,8 +33,15 @@ Stop solving imaginary problems. Start building real solutions.
 ### 🤝 Pillar 3: CONNECT (Social Graph)
 You are the average of the five people you code with.
 -   **LeetCode Buddy Search:** A specialized search engine to find and follow friends on LeetCode.
+-   **Deep Search Technology:** Intelligent fallback to a seeded database of **16,000+ users** ensures you find profiles even when APIs are strict.
 -   **Peer Analytics:** View comparative stats and progress of your peers.
--   **Community Discovery:** Find study groups and coding partners (Coming Soon).
+
+### 💎 Pillar 4: SHOWCASE (Portfolio Tracker)
+Your hard work deserves to be seen.
+-   **Cross-Platform Portfolio:** A single view combining **LeetCode, CodeForces, and CodeChef** stats.
+-   **Unified Heatmap:** A GitHub-style activity graph that merges your daily submissions from all three platforms into one "Green Wall".
+-   **Instant Developer Card:** Generate a premium, sharable image card of your year's achievements with one click.
+-   **Visual Weakness Analysis:** Donut charts and trend lines to identify your strongest and weakest topics.
 
 ---
 

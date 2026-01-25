@@ -9,6 +9,7 @@ import PlatformFilters from "@/components/PlatformFilters";
 import ToggleTheme from "@/components/ToggleTheme";
 import ProfileLink from "@/components/ProfileLink";
 import GlobalStats from "@/components/GlobalStats";
+
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -39,6 +40,8 @@ export default async function Home({ params, searchParams }: PageProps) {
         <div className="w-full mt-12 space-y-12">
           {/* Dashboard Stats */}
           <GlobalStats />
+
+
 
           <div className="flex flex-col items-center gap-12">
             {/* Contextual Recommendation Area */}

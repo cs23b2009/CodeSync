@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { searchProfiles, upsertProfile } from "@/services/search/database";
 import { fetchLeetCodeUserProfile, searchLeetCodeUsers } from "@/services/search/leetcode";
 import { IndexedProfile } from "@/types/user";
+import fs from "fs";
+import path from "path";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -15,7 +17,15 @@ export async function GET(request: Request) {
 
     try {
         // 1. Discover potential substring matches from LeetCode directly
-        const discoveredUsers = await searchLeetCodeUsers(query);
+        let discoveredUsers = await searchLeetCodeUsers(query);
+
+        // Fallback: If search returns nothing (API issues), try exact match
+        if (discoveredUsers.length === 0) {
+            const exactMatch = await fetchLeetCodeUserProfile(query);
+            if (exactMatch) {
+                discoveredUsers = [exactMatch];
+            }
+        }
 
         // 2. Map discovered users to the required format
         const discoveredResults = discoveredUsers.map(u => ({
@@ -23,8 +33,8 @@ export async function GET(request: Request) {
             realName: u.realName || u.username,
             avatar: u.avatar,
             platform: 'leetcode',
-            rating: 0,
-            ranking: 'N/A'
+            rating: u.rating || 0,
+            ranking: u.ranking || 'N/A'
         })) as IndexedProfile[];
 
         // 3. Background Sync: Try to fetch and index top results
@@ -46,26 +56,54 @@ export async function GET(request: Request) {
             }
         })();
 
-        // 4. Merge with local DB for "Deep Search"
-        // We'll search local DB with a higher limit since it has the CSV users too
+        // 4. Merge with local DB and JSON Data for "Deep Search"
         let combinedUsers = discoveredResults;
+
+        // A. Local JSON Search (from CSV)
         try {
-            const localUsers = await searchProfiles(query, 100); // Fetch more from local DB
-            if (localUsers.length > 0) {
-                const localMap = new Map(localUsers.map(u => [u.username, u]));
-                const merged = [...localUsers];
-                discoveredResults.forEach(u => {
-                    if (u.username && !localMap.has(u.username)) {
-                        merged.push(u);
+            const jsonPath = path.join(process.cwd(), 'src/data/seeded_users.json');
+            if (fs.existsSync(jsonPath)) {
+                const fileContent = fs.readFileSync(jsonPath, 'utf-8');
+                const seededUsers = JSON.parse(fileContent);
+                const queryLower = query.toLowerCase();
+                const matchedSeeded = seededUsers
+                    .filter((u: any) => u.username.toLowerCase().includes(queryLower))
+                    .slice(0, 50); // limit local matches
+
+                // Add unique local matches
+                const existingNames = new Set(combinedUsers.map(u => u.username));
+                matchedSeeded.forEach((u: any) => {
+                    if (!existingNames.has(u.username)) {
+                        combinedUsers.push(u);
+                        existingNames.add(u.username);
                     }
                 });
-                combinedUsers = merged;
+            }
+        } catch (e) {
+            console.error("Local JSON search error", e);
+        }
+
+        // B. Database Search
+        try {
+            const localUsers = await searchProfiles(query, 100);
+            if (localUsers.length > 0) {
+                const existingNames = new Set(combinedUsers.map(u => u.username));
+                localUsers.forEach(u => {
+                    if (u.username && !existingNames.has(u.username)) {
+                        combinedUsers.push(u);
+                        existingNames.add(u.username);
+                    }
+                });
             }
         } catch (dbError) {
-            // Log if needed
+            // DB down, ignore
         }
 
         // 5. Paginate the combined results
+        // Sort by relevance (exact match first, then rating/etc) or keep discovery/seeded order?
+        // Let's sort by rating for seeded users mostly.
+        combinedUsers.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
         const totalFound = combinedUsers.length;
         const startIndex = (page - 1) * pageSize;
         const endIndex = startIndex + pageSize;
