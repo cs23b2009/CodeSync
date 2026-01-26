@@ -211,7 +211,6 @@ export async function fetchCodeChefStats(username: string): Promise<UserStats> {
         let ratingHistory: { date: string; rating: number }[] = [];
         let contestCount = 0;
         let derivedCurrentRating = 0;
-        let derivedMaxRating = 0;
 
         if (historyMatch && historyMatch[1]) {
             try {
@@ -228,7 +227,6 @@ export async function fetchCodeChefStats(username: string): Promise<UserStats> {
 
                     if (ratingHistory.length > 0) {
                         derivedCurrentRating = ratingHistory[ratingHistory.length - 1].rating;
-                        derivedMaxRating = Math.max(...ratingHistory.map(r => r.rating));
                     }
                 }
             } catch (e) {
@@ -236,25 +234,34 @@ export async function fetchCodeChefStats(username: string): Promise<UserStats> {
             }
         }
 
-        // Fallback or specific regex
-        const ratingMatch = text.match(/<div class="rating-number">(\d+)<\/div>/);
+        // Ratings: Try specific regex or fallback to derived
+        const ratingMatch = text.match(/<div class="rating-number">\s*(\d+)\s*<\/div>/) || text.match(/class="rating-number"[^>]*?>\s*(\d+)\s*</);
         const currentRating = ratingMatch ? parseInt(ratingMatch[1]) : derivedCurrentRating;
 
         // Solved Count - Try multiple patterns
         let totalSolved = 0;
-        // Pattern 1: Fully Solved (123)
-        const solvedMatch = text.match(/Fully Solved[\s\S]*?\((\d+)\)/);
-        if (solvedMatch) {
-            totalSolved = parseInt(solvedMatch[1]);
-        } else {
-            // Pattern 2: (123) inside h3 or similar nearby
-            const solvedMatch2 = text.match(/Total Problem Solved: (\d+)/); // sometimes used
-            if (solvedMatch2) totalSolved = parseInt(solvedMatch2[1]);
-        }
 
-        // If solved is still 0, try searching for the number in the sidebar grid
-        // <p>Practice Problems: 10</p> etc. Hard to sum.
-        // We will assume 0 if not found for now.
+        // Pattern 1: New Profile Design "Fully Solved (123)"
+        // Note: CodeChef sometimes hides this or changes format
+        const solvedMatch = text.match(/Fully Solved\s*\((\d+)\)/i);
+
+        // Pattern 2: "Total Problem Solved: 123"
+        const solvedMatch2 = text.match(/Total Problem Solved:\s*(\d+)/i);
+
+        // Pattern 3: Look for the specific section content in heatmap data or sidebar
+        // e.g., <h3 style="display:inline;">Problems Solved</h3> <h5>(200)</h5>
+        const solvedMatch3 = text.match(/Problems Solved[^\d]*(\d+)/i);
+
+        if (solvedMatch) totalSolved = parseInt(solvedMatch[1]);
+        else if (solvedMatch2) totalSolved = parseInt(solvedMatch2[1]);
+        else if (solvedMatch3) totalSolved = parseInt(solvedMatch3[1]);
+
+        // If still 0, we might need a more aggressive search for numeric stats associated with "Solved"
+        if (totalSolved === 0) {
+            // Fallback: look for "Practice Problems" count if available in sidebar text
+            // <p>Practice Problems: 10</p>
+            // This is rarely reliable, so 0 is better than a random number.
+        }
 
         return {
             totalSolved,

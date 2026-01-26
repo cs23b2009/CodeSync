@@ -134,7 +134,7 @@ export async function fetchCodeChefActivity(username: string): Promise<Record<st
 
         // Regex to find the JSON array containing date and value
         let data;
-        const match = text.match(/points\s*=\s*(\[[\s\S]*?\]);/);
+        const match = text.match(/points\s*=\s*(\[[\s\S]*?\]);/) || text.match(/var\s+points\s*=\s*(\[[\s\S]*?\]);/);
 
         if (match && match[1]) {
             try {

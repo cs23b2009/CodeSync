@@ -398,11 +398,7 @@ export default function PortfolioTracker() {
                                         </DialogHeader>
                                         <CombinedHeatmap
                                             preloadedData={data}
-                                            preloadedStats={{
-                                                totalSolved: stats.totalSolved,
-                                                totalContests: stats.totalContests,
-                                                maxRating: stats.maxRating
-                                            }}
+                                            preloadedStats={stats}
                                             preloadedUsernames={usernames}
                                         />
                                     </DialogContent>

@@ -16,12 +16,15 @@ async function test() {
         const text = await response.text();
         console.log("Page fetched. Length:", text.length);
 
-        // Test Regexes
-        const ratingMatch = text.match(/<div class="rating-number">(\d+)<\/div>/);
+        // Test NEW Regexes
+        // Ratings
+        const ratingMatch = text.match(/<div class="rating-number">\s*(\d+)\s*<\/div>/) || text.match(/class="rating-number"[^>]*?>\s*(\d+)\s*</);
         console.log("Rating:", ratingMatch ? ratingMatch[1] : "Not found");
 
-        const solvedMatch = text.match(/Fully Solved\s*\((\d+)\)/);
-        console.log("Solved:", solvedMatch ? solvedMatch[1] : "Not found");
+        const solvedMatch = text.match(/Fully Solved\s*\((\d+)\)/i);
+        const solvedMatch2 = text.match(/Total Problem Solved:\s*(\d+)/i);
+        const solvedMatch3 = text.match(/Problems Solved[^\d]*(\d+)/i);
+        console.log("Solved:", solvedMatch ? solvedMatch[1] : (solvedMatch2 ? solvedMatch2[1] : (solvedMatch3 ? solvedMatch3[1] : "Not found")));
 
         const historyMatch = text.match(/(?:var\s+|window\.)?all_rating\s*=\s*(\[[\s\S]*?\]);/);
         console.log("History found:", !!historyMatch);
