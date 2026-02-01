@@ -3,6 +3,9 @@ import { IndexedProfile } from "@/types/user";
 
 export async function upsertProfile(profile: IndexedProfile) {
     const client = await clientPromise;
+    if (!client) {
+        throw new Error("Database connection not available");
+    }
     const db = client.db();
     const collection = db.collection("indexed_profiles");
 
@@ -15,6 +18,9 @@ export async function upsertProfile(profile: IndexedProfile) {
 
 export async function searchProfiles(query: string, limit: number = 20): Promise<IndexedProfile[]> {
     const client = await clientPromise;
+    if (!client) {
+        throw new Error("Database connection not available");
+    }
     const db = client.db();
     const collection = db.collection("indexed_profiles");
 

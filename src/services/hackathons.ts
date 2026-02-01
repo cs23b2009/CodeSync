@@ -58,6 +58,9 @@ export async function syncHackathons() {
     if (hackathons.length === 0) return;
 
     const client = await clientPromise;
+    if (!client) {
+        throw new Error("Database connection not available");
+    }
     const db = client.db();
     const collection = db.collection("hackathons");
 
@@ -82,6 +85,9 @@ export async function getHackathons(filter: any = {}): Promise<Hackathon[]> {
 
     try {
         const client = await clientPromise;
+        if (!client) {
+            throw new Error("Database connection not available");
+        }
         const db = client.db();
         const collection = db.collection("hackathons");
 
