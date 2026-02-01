@@ -41,6 +41,9 @@ function extractContestInfo(videoTitle: string, platform: string) {
 export async function GET() {
   try {
     const client = await clientPromise;
+    if (!client) {
+      throw new Error("Database connection not available");
+    }
     const db = client.db("contestTracker");
     const youtubeCollection = db.collection("youtube_links");
 

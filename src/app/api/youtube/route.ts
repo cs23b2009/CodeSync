@@ -4,6 +4,9 @@ import clientPromise from "@/lib/mongodb";
 export async function GET() {
   try {
     const client = await clientPromise;
+    if (!client) {
+      throw new Error("Database connection not available");
+    }
     const db = client.db("contestTracker");
     const youtubeCollection = db.collection("youtube_links");
 
@@ -112,6 +115,9 @@ export async function POST(request: Request) {
     const { platform, contestId, youtubeUrl } = await request.json();
 
     const client = await clientPromise;
+    if (!client) {
+      throw new Error("Database connection not available");
+    }
 
     await client
       .db("contestTracker")

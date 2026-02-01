@@ -5,6 +5,9 @@ import { getTimeUntil } from "@/lib/parser";
 import clientPromise from "@/lib/mongodb";
 export async function POST(req: NextRequest) {
   const client = await clientPromise;
+  if (!client) {
+    throw new Error("Database connection not available");
+  }
   const db = client.db("contestTracker");
   const collection = db.collection("reminders");
   const body = await req.json();
