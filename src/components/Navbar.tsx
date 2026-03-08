@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Trophy, BarChart2, Calendar, Users } from "lucide-react";
+import { Trophy, BarChart2, Calendar, Users, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -15,7 +15,8 @@ export default function Navbar() {
         { name: "Arena", href: "/", icon: Trophy },
         { name: "Hackathons", href: "/hackathons", icon: Calendar },
         { name: "LeetCode Buddies", href: "/search", icon: Users },
-        { name: "Portfolio Tracker", href: "/stats", icon: BarChart2 }
+        { name: "Portfolio Tracker", href: "/stats", icon: BarChart2 },
+        { name: "AI Coach", href: "/ai-coach", icon: Brain },
     ];
 
     return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
     BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer,
     AreaChart, Area, PieChart, Pie, Cell, Legend
@@ -15,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Trophy, Flame, Calendar, Award, CheckCircle2, RefreshCw } from "lucide-react";
+import { Loader2, Trophy, Flame, Calendar, Award, CheckCircle2, RefreshCw, Brain } from "lucide-react";
 import { PlatformLogo } from "@/components/Icons";
 import { toast } from "sonner";
 
@@ -30,6 +31,7 @@ const COLORS = {
 };
 
 export default function PortfolioTracker() {
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<ActivitySubmission[]>([]);
     const [stats, setStats] = useState<{
@@ -403,6 +405,29 @@ export default function PortfolioTracker() {
                                         />
                                     </DialogContent>
                                 </Dialog>
+                            </CardContent>
+                        </Card>
+
+                        {/* AI Coach Button */}
+                        <Card className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border-purple-500/30">
+                            <CardContent className="p-6 text-center space-y-4">
+                                <Brain className="w-12 h-12 text-purple-400 mx-auto" />
+                                <div>
+                                    <h3 className="text-lg font-bold text-white">AI Coach</h3>
+                                    <p className="text-sm text-zinc-400">Get a personalised skill gap analysis and 30-day practice plan.</p>
+                                </div>
+                                <Button
+                                    onClick={() => {
+                                        const params = new URLSearchParams();
+                                        if (usernames.leetcode) params.set("leetcode", usernames.leetcode);
+                                        if (usernames.codeforces) params.set("codeforces", usernames.codeforces);
+                                        if (usernames.codechef) params.set("codechef", usernames.codechef);
+                                        router.push(`/ai-coach?${params.toString()}`);
+                                    }}
+                                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold"
+                                >
+                                    <Brain className="mr-2 h-4 w-4" /> Analyze My Skills
+                                </Button>
                             </CardContent>
                         </Card>
                     </div>
