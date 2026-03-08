@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -207,9 +207,9 @@ function OverviewStats({ analysis, meta }: { analysis: SkillAnalysis; meta: { to
 }
 
 // ──────────────────────────────────────────────────────────────
-//  MAIN PAGE
+//  MAIN PAGE CONTENT
 // ──────────────────────────────────────────────────────────────
-export default function AICoachPage() {
+function AICoachContent() {
     const searchParams = useSearchParams();
     const [usernames, setUsernames] = useState({
         leetcode: "",
@@ -567,5 +567,23 @@ export default function AICoachPage() {
                 <Footer />
             </div>
         </div>
+    );
+}
+
+// ──────────────────────────────────────────────────────────────
+//  PAGE WRAPPER (For Next.js Suspense requirement)
+// ──────────────────────────────────────────────────────────────
+export default function AICoachPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-zinc-950 flex items-center justify-center pt-32">
+                <div className="flex flex-col items-center gap-4 text-zinc-500">
+                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                    <p className="text-sm">Loading Coach...</p>
+                </div>
+            </div>
+        }>
+            <AICoachContent />
+        </Suspense>
     );
 }
