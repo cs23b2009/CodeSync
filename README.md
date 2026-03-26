@@ -98,45 +98,53 @@ graph TD
 - MongoDB instance (Local or Atlas)
 - npm/yarn/pnpm
 
-### Installation
+### 1. Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/codesync-pro.git
-   cd codesync-pro
-   ```
+Clone the repository:
+```bash
+git clone https://github.com/cs23b2009/CodeSync.git
+cd CodeSync
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### 2. Launch Backend (API Server)
+```bash
+cd backend
+npm install
+```
+Create `backend/.env` with your secrets:
+```env
+PORT=10000
+MONGODB_URI=mongodb://localhost:27017/codesync-pro
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+GEMINI_API_KEY=your_gemini_key
+CODECHEF_API_URL=https://codechef.com/api
+CODEFORCES_API_URL=https://codeforces.com/api
+LEETCODE_API_URL=https://leetcode.com/api
+```
+Run the development server:
+```bash
+npm run dev
+```
 
-3. **Environment Setup**
-   Create a `.env.local` file in the root directory:
-   ```env
-   # Database
-   MONGODB_URI=mongodb://localhost:27017/codesync-pro
-
-   # API Configuration
-   NEXT_PUBLIC_API_URL=http://localhost:3000
-
-   # External Integrations (Optional elements)
-   YOUTUBE_API_KEY=your_key_here
-   
-   # Email Service (Required for Notifications)
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your_email@gmail.com
-   SMTP_PASS=your_app_password
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+### 3. Launch Frontend (UI)
+In a new terminal:
+```bash
+cd frontend
+npm install
+```
+Create `frontend/.env` with your frontend variables:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:10000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+Run the frontend server:
+```bash
+npm run dev
+```
+Navigate to [http://localhost:3000](http://localhost:3000)
 
 ---
 
