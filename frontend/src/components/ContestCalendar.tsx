@@ -51,83 +51,79 @@ export default function ContestCalendar() {
     const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
     const goToToday = () => setCurrentDate(new Date());
 
-    // Platform styling helper
     const getPlatformStyle = (platform: string) => {
         switch (platform.toLowerCase()) {
             case 'codeforces':
-                return "bg-amber-100 text-amber-800 dark:bg-yellow-500/20 dark:text-yellow-400 border-amber-200 dark:border-yellow-500/30";
+                return "bg-amber-100 text-amber-800 border-amber-200";
             case 'leetcode':
-                return "bg-orange-100 text-orange-800 dark:bg-orange-500/20 dark:text-orange-400 border-orange-200 dark:border-orange-500/30";
+                return "bg-orange-100 text-orange-800 border-orange-200";
             case 'codechef':
-                return "bg-stone-100 text-stone-800 dark:bg-amber-700/20 dark:text-amber-400 border-stone-200 dark:border-amber-700/30";
+                return "bg-stone-100 text-stone-800 border-stone-200";
             case 'atcoder':
-                return "bg-gray-100 text-gray-800 dark:bg-gray-700/40 dark:text-gray-300 border-gray-200 dark:border-gray-600";
+                return "bg-gray-100 text-gray-800 border-gray-200";
             default:
-                return "bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-400 border-blue-200 dark:border-blue-500/30";
+                return "bg-blue-100 text-blue-800 border-blue-200";
         }
     };
 
     if (isLoading) {
         return (
-            <div className="w-full max-w-7xl mx-auto p-12 flex flex-col justify-center items-center bg-zinc-950/40 backdrop-blur-3xl rounded-[2.5rem] border border-zinc-800/40 min-h-[600px] shadow-2xl">
+            <div className="w-full max-w-7xl mx-auto p-10 flex flex-col justify-center items-center bg-white rounded-3xl border border-gray-100 shadow-card min-h-[500px]">
                 <div className="relative">
-                    <div className="absolute -inset-8 bg-blue-500/20 blur-[60px] rounded-full animate-pulse" />
-                    <Loader2 className="w-12 h-12 animate-spin text-blue-500 relative" />
+                    <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
                 </div>
-                <p className="mt-8 text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">Syncing Arena Data</p>
+                <p className="mt-6 text-gray-400 font-medium text-sm">Syncing Contest Data</p>
             </div>
         );
     }
 
     return (
-        <div className="w-full max-w-7xl mx-auto p-8 md:p-10 bg-zinc-950/40 backdrop-blur-3xl rounded-[3rem] border border-zinc-800/40 shadow-2xl space-y-8">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-5">
-                    <div className="p-4 bg-blue-500/10 rounded-3xl border border-blue-500/20">
-                        <CalendarIcon className="w-8 h-8 text-blue-400" />
+        <div className="w-full max-w-6xl mx-auto p-8 bg-white rounded-3xl border border-gray-100 shadow-card space-y-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    <div className="p-3 bg-blue-50 rounded-2xl border border-blue-100">
+                        <CalendarIcon className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em] mb-1">Contest Timeline</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+                        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Contest Timeline</p>
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                             {format(currentDate, "MMMM yyyy")}
                         </h2>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 bg-zinc-900/60 p-2 rounded-[1.8rem] border border-zinc-800/50">
+                <div className="flex items-center gap-1 bg-gray-50 p-1.5 rounded-xl">
                     <button
                         onClick={prevMonth}
-                        className="p-3 hover:bg-zinc-800 rounded-2xl transition-all text-zinc-400 hover:text-white"
+                        className="p-2 hover:bg-white rounded-xl transition-all text-gray-500 hover:text-gray-900"
                     >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
                         onClick={goToToday}
-                        className="px-6 py-2 text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all"
+                        className="px-4 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-all"
                     >
                         Today
                     </button>
                     <button
                         onClick={nextMonth}
-                        className="p-3 hover:bg-zinc-800 rounded-2xl transition-all text-zinc-400 hover:text-white"
+                        className="p-2 hover:bg-white rounded-xl transition-all text-gray-500 hover:text-gray-900"
                     >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="w-5 h-5" />
                     </button>
                 </div>
             </div>
 
-            {/* Calendar Grid */}
-            <div className="space-y-4">
+            <div className="space-y-3">
                 <div className="grid grid-cols-7">
                     {WEEKDAYS.map((day) => (
-                        <div key={day} className="text-center py-4 text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em]">
+                        <div key={day} className="text-center py-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
                             {day}
                         </div>
                     ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-px bg-zinc-800/20 border border-zinc-800/30 rounded-[2rem] overflow-hidden shadow-inner">
+                <div className="grid grid-cols-7 gap-px bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
                     {days.map((day, dayIdx) => {
                         const dayContests = contests.filter(c => {
                             const cDate = parseISO(c.startTimeISO || c.startTime);
@@ -141,25 +137,25 @@ export default function ContestCalendar() {
                             <div
                                 key={day.toString()}
                                 className={cn(
-                                    "min-h-[140px] md:min-h-[160px] p-4 transition-all relative group bg-zinc-950/40",
-                                    !isCurrentMonth && "opacity-20",
-                                    isToday && "bg-blue-500/5"
+                                    "min-h-[100px] md:min-h-[120px] p-2 transition-all relative group bg-white",
+                                    !isCurrentMonth && "opacity-40",
+                                    isToday && "bg-blue-50"
                                 )}
                             >
-                                <div className="flex justify-between items-start mb-4">
+                                <div className="flex justify-start mb-2">
                                     <span
                                         className={cn(
-                                            "w-9 h-9 flex items-center justify-center rounded-2xl text-sm font-black transition-all",
+                                            "w-7 h-7 flex items-center justify-center rounded-xl text-sm font-semibold transition-all",
                                             isToday
-                                                ? "bg-blue-600 text-white shadow-xl shadow-blue-500/30 ring-2 ring-blue-400/20"
-                                                : isCurrentMonth ? "text-zinc-400 group-hover:bg-zinc-800 group-hover:text-white" : "text-zinc-700"
+                                                ? "bg-blue-600 text-white shadow-md"
+                                                : isCurrentMonth ? "text-gray-600 group-hover:bg-gray-100" : "text-gray-300"
                                         )}
                                     >
                                         {format(day, "d")}
                                     </span>
                                 </div>
 
-                                <div className="space-y-1.5 overflow-hidden">
+                                <div className="space-y-1 overflow-hidden">
                                     {dayContests.slice(0, 3).map((contest) => (
                                         <a
                                             key={contest.id}
@@ -167,18 +163,18 @@ export default function ContestCalendar() {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={cn(
-                                                "block text-[9px] font-bold p-1.5 rounded-lg border truncate transition-all hover:scale-105",
-                                                contest.platform.toLowerCase() === 'codeforces' ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
-                                                    contest.platform.toLowerCase() === 'leetcode' ? "bg-yellow-500/10 text-yellow-500 border-yellow-500/20" :
-                                                        "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                                                "block text-[8px] font-medium p-1.5 rounded-lg border truncate transition-all hover:scale-[1.02]",
+                                                getPlatformStyle(contest.platform)
                                             )}
                                         >
                                             <span className="opacity-60 mr-1">{format(parseISO(contest.startTimeISO || contest.startTime), "HH:mm")}</span>
-                                            {contest.name}
+                                            {contest.name.length > 15 ? contest.name.substring(0, 15) + "..." : contest.name}
                                         </a>
                                     ))}
                                     {dayContests.length > 3 && (
-                                        <p className="text-[8px] text-zinc-600 font-black text-center uppercase tracking-tighter tracking-[0.2em]">+ {dayContests.length - 3} MORE</p>
+                                        <p className="text-[7px] text-gray-400 font-medium text-center uppercase tracking-wider">
+                                            + {dayContests.length - 3} MORE
+                                        </p>
                                     )}
                                 </div>
                             </div>
@@ -187,12 +183,10 @@ export default function ContestCalendar() {
                 </div>
             </div>
 
-            <div className="pt-6 flex items-center justify-center gap-3">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-zinc-800" />
-                <p className="text-[9px] text-zinc-600 font-black uppercase tracking-[0.5em]">
-                    Competitive Arena Sync
+            <div className="pt-4 flex items-center justify-center gap-3">
+                <p className="text-[9px] text-gray-400 font-medium uppercase tracking-wider">
+                    Contest Synchronization
                 </p>
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-zinc-800" />
             </div>
         </div>
     );

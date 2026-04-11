@@ -9,6 +9,7 @@ export const CodeforcesLogo = ({ className, size = 24 }: { className?: string; s
             width={size}
             height={size}
             className="object-contain"
+            unoptimized
         />
     </div>
 );
@@ -21,6 +22,7 @@ export const LeetCodeLogo = ({ className, size = 24 }: { className?: string; siz
             width={size}
             height={size}
             className="object-contain"
+            unoptimized
         />
     </div>
 );
@@ -33,6 +35,7 @@ export const CodeChefLogo = ({ className, size = 24 }: { className?: string; siz
             width={size}
             height={size}
             className="object-contain"
+            unoptimized
         />
     </div>
 );

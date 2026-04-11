@@ -38,25 +38,24 @@ interface ContestCardProps {
   onBookmarkChange?: (contest: Contest, isBookmarked: boolean) => void;
 }
 
-// Skeleton Loader Component
 const ContestCardSkeleton = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
     {[...Array(6)].map((_, i) => (
-      <div key={i} className="p-8 bg-zinc-900/40 rounded-[2.5rem] border border-zinc-800/50 space-y-8 animate-pulse">
-        <div className="flex items-center gap-6">
-          <div className="w-16 h-16 bg-zinc-800/50 rounded-3xl" />
-          <div className="space-y-3 flex-1">
-            <div className="h-4 w-24 bg-zinc-800/50 rounded-full" />
-            <div className="h-6 w-3/4 bg-zinc-800/50 rounded-lg" />
+      <div key={i} className="p-6 bg-white rounded-3xl border border-gray-100 shadow-card space-y-6 animate-pulse">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 bg-gray-100 rounded-2xl" />
+          <div className="space-y-2 flex-1">
+            <div className="h-3 w-16 bg-gray-100 rounded-full" />
+            <div className="h-5 w-3/4 bg-gray-100 rounded-lg" />
           </div>
         </div>
-        <div className="space-y-4">
-          <div className="h-12 w-full bg-zinc-800/20 rounded-2xl" />
-          <div className="h-12 w-full bg-zinc-800/20 rounded-2xl" />
+        <div className="space-y-3">
+          <div className="h-10 w-full bg-gray-50 rounded-xl" />
+          <div className="h-10 w-full bg-gray-50 rounded-xl" />
         </div>
-        <div className="pt-4 border-t border-zinc-800/50 flex gap-3">
-          <div className="h-12 flex-1 bg-zinc-800/50 rounded-2xl" />
-          <div className="h-12 w-12 bg-zinc-800/50 rounded-2xl" />
+        <div className="pt-3 border-t border-gray-100 flex gap-3">
+          <div className="h-10 flex-1 bg-gray-100 rounded-xl" />
+          <div className="h-10 w-10 bg-gray-100 rounded-xl" />
         </div>
       </div>
     ))}
@@ -100,7 +99,6 @@ export default function ContestCard({
       });
     } catch (error) {
       console.error("Error handling bookmark:", error);
-      // Revert the optimistic update if the API call fails
       if (onBookmarkChange) {
         onBookmarkChange(contest, isBookmarked);
       }
@@ -141,10 +139,10 @@ export default function ContestCard({
 
   const getPlatformStyle = (platform: string) => {
     switch (platform.toLowerCase()) {
-      case 'codechef': return { badge: 'text-white border border-gray-600', name: 'CodeChef' };
-      case 'codeforces': return { badge: 'text-blue-500 border border-blue-500/30', name: 'CodeForces' };
-      case 'leetcode': return { badge: 'text-yellow-500 border border-yellow-500/30', name: 'LeetCode' };
-      default: return { badge: 'text-gray-400 border border-gray-600', name: platform };
+      case 'codechef': return { badge: 'text-amber-700 border border-amber-200 bg-amber-50', name: 'CodeChef' };
+      case 'codeforces': return { badge: 'text-blue-600 border border-blue-200 bg-blue-50', name: 'CodeForces' };
+      case 'leetcode': return { badge: 'text-amber-600 border border-amber-200 bg-amber-50', name: 'LeetCode' };
+      default: return { badge: 'text-gray-600 border border-gray-200 bg-gray-50', name: platform };
     }
   };
 
@@ -155,7 +153,7 @@ export default function ContestCard({
   if (!contests || contests.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">No contests found</p>
+        <p className="text-gray-500">No contests found</p>
       </div>
     );
   }
@@ -172,7 +170,7 @@ export default function ContestCard({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {contests.map((contest) => {
           const contestId = contest.id || contest.name;
           const isBookmarked = bookmarkedContestIds.includes(contestId.toString());
@@ -181,80 +179,69 @@ export default function ContestCard({
           return (
             <div
               key={contestId}
-              className="group relative bg-zinc-950/40 border border-zinc-800/40 backdrop-blur-2xl transition-all duration-500 hover:bg-zinc-900/60 hover:border-blue-500/30 rounded-[2.5rem] hover:ring-1 hover:ring-blue-500/20 shadow-2xl h-full flex flex-col p-8 overflow-hidden"
+              className="group relative bg-white border border-gray-100 rounded-3xl shadow-card hover:shadow-lg transition-all duration-300 hover:border-blue-200 h-full flex flex-col p-6 overflow-hidden"
             >
-              {/* Card Background Glow */}
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/5 blur-[80px] rounded-full group-hover:bg-blue-500/10 transition-all duration-500" />
-
               <div className="relative z-10 flex flex-col h-full">
-                {/* Header with Platform Logo */}
-                <div className="flex items-center gap-6 mb-8">
-                  <div className="relative shrink-0">
-                    <div className="absolute -inset-1 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-3xl blur opacity-0 group-hover:opacity-40 transition-opacity" />
-                    <div className="relative w-16 h-16 bg-zinc-900 border border-zinc-800/50 rounded-3xl flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                      <PlatformLogo platform={contest.platform} size={32} />
-                    </div>
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center">
+                    <PlatformLogo platform={contest.platform} size={28} />
                   </div>
 
                   <div className="flex-1 min-w-0 space-y-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                    <div className="flex items-center gap-2">
+                      <span className={cn("px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider", platformStyle.badge)}>
                         {platformStyle.name}
                       </span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase bg-green-500/10 text-green-400 border border-green-500/20">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold tracking-wider text-green-700 border border-green-200 bg-green-50">
                         Upcoming
                       </span>
                     </div>
-                    <h3 className="text-xl font-black text-white line-clamp-2 leading-tight group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-base font-semibold text-gray-900 line-clamp-2 leading-tight">
                       {contest.name}
                     </h3>
                   </div>
                 </div>
 
-                {/* Details Section */}
-                <div className="space-y-4 flex-1">
-                  <div className="grid grid-cols-1 gap-3">
-                    <div className="flex items-center gap-3 text-zinc-400 text-sm bg-zinc-900/40 p-3 rounded-2xl border border-zinc-800/50">
-                      <Calendar size={18} className="text-blue-400" />
-                      <span className="font-medium text-xs uppercase tracking-wider">{formatDateClient(contest.startTime)}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-zinc-400 text-sm bg-zinc-900/40 p-3 rounded-2xl border border-zinc-800/50">
-                      <Clock size={18} className="text-purple-400" />
-                      <span className="font-medium text-xs uppercase tracking-wider">{contest.duration}</span>
-                    </div>
+                <div className="space-y-3 flex-1">
+                  <div className="flex items-center gap-3 text-gray-600 text-sm bg-gray-50 p-3 rounded-xl">
+                    <Calendar size={16} className="text-blue-600" />
+                    <span className="font-medium text-xs">{formatDateClient(contest.startTime)}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-600 text-sm bg-gray-50 p-3 rounded-xl">
+                    <Clock size={16} className="text-purple-600" />
+                    <span className="font-medium text-xs">{contest.duration}</span>
                   </div>
                 </div>
 
-                {/* Actions Footer */}
-                <div className="mt-8 space-y-3">
+                <div className="mt-5 space-y-3">
                   <div className="flex gap-3">
                     <a
                       href={contest.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 h-12 bg-white text-black font-black rounded-2xl transition-all hover:bg-zinc-200 active:scale-95"
+                      className="flex-1 flex items-center justify-center gap-2 h-10 bg-blue-600 text-white font-semibold rounded-xl transition-all hover:bg-blue-700 active:scale-[0.98]"
                     >
-                      Enter Arena <ExternalLink size={16} />
+                      View Contest <ExternalLink size={14} />
                     </a>
                   </div>
 
                   <div className="flex gap-3">
                     <button
                       onClick={(e) => handleSendReminder(e, contest)}
-                      className="flex-1 flex items-center justify-center gap-2 h-12 bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 hover:text-white hover:border-zinc-700 transition-all font-bold text-[10px] uppercase tracking-widest"
+                      className="flex-1 flex items-center justify-center gap-2 h-10 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-all font-semibold text-xs"
                     >
-                      Remind Me <Mail size={14} />
+                      Set Reminder <Mail size={14} />
                     </button>
                     <button
                       onClick={(e) => handleBookmark(e, contest)}
                       className={cn(
-                        "w-12 h-12 flex items-center justify-center border rounded-2xl transition-all hover:scale-105 active:scale-95",
+                        "w-10 h-10 flex items-center justify-center border rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]",
                         isBookmarked
-                          ? "bg-yellow-500/10 border-yellow-500/40 text-yellow-500 shadow-lg shadow-yellow-500/10"
-                          : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-white"
+                          ? "bg-amber-50 border-amber-200 text-amber-600"
+                          : "bg-gray-50 border-gray-200 text-gray-400 hover:text-gray-600"
                       )}
                     >
-                      <Bookmark size={18} className={cn(isBookmarked && "fill-current")} />
+                      <Bookmark size={16} className={cn(isBookmarked && "fill-current")} />
                     </button>
                   </div>
                 </div>

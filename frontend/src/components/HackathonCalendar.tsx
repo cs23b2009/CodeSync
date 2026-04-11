@@ -14,7 +14,7 @@ import {
     subMonths,
     parseISO,
 } from "date-fns";
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Loader2, Info, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Loader2, Star } from "lucide-react";
 import { Hackathon } from "@/types/hackathon";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -56,68 +56,61 @@ export default function HackathonCalendar() {
 
     if (isLoading) {
         return (
-            <div className="w-full max-w-7xl mx-auto p-12 flex flex-col justify-center items-center bg-zinc-950/40 backdrop-blur-3xl rounded-[2.5rem] border border-zinc-800/40 min-h-[600px] shadow-2xl">
-                <div className="relative">
-                    <div className="absolute -inset-8 bg-indigo-500/20 blur-[60px] rounded-full animate-pulse" />
-                    <Loader2 className="w-12 h-12 animate-spin text-indigo-500 relative" />
-                </div>
-                <p className="mt-8 text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px] animate-pulse">Syncing Galaxy Data</p>
+            <div className="w-full max-w-7xl mx-auto p-10 flex flex-col justify-center items-center bg-white rounded-3xl border border-gray-100 shadow-card min-h-[500px]">
+                <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
+                <p className="mt-6 text-gray-400 font-medium text-sm">Syncing Galaxy Data</p>
             </div>
         );
     }
 
     return (
-        <div className="w-full max-w-7xl mx-auto p-8 md:p-10 bg-zinc-950/40 backdrop-blur-3xl rounded-[3rem] border border-zinc-800/40 shadow-2xl space-y-8">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-5">
-                    <div className="p-4 bg-indigo-500/10 rounded-3xl border border-indigo-500/20">
-                        <CalendarIcon className="w-8 h-8 text-indigo-400" />
+        <div className="w-full max-w-7xl mx-auto p-8 bg-white rounded-3xl border border-gray-100 shadow-card space-y-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    <div className="p-3 bg-indigo-50 rounded-2xl border border-indigo-100">
+                        <CalendarIcon className="w-6 h-6 text-indigo-600" />
                     </div>
                     <div>
-                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em] mb-1">Hackathon Timeline</p>
-                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter">
+                        <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Hackathon Timeline</p>
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                             {format(currentDate, "MMMM yyyy")}
                         </h2>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 bg-zinc-900/60 p-2 rounded-[1.8rem] border border-zinc-800/50">
+                <div className="flex items-center gap-1 bg-gray-50 p-1.5 rounded-xl">
                     <button
                         onClick={prevMonth}
-                        className="p-3 hover:bg-zinc-800 rounded-2xl transition-all text-zinc-400 hover:text-white"
+                        className="p-2 hover:bg-white rounded-xl transition-all text-gray-500 hover:text-gray-900"
                     >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
                         onClick={goToToday}
-                        className="px-6 py-2 text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all"
+                        className="px-4 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-all"
                     >
                         Today
                     </button>
                     <button
                         onClick={nextMonth}
-                        className="p-3 hover:bg-zinc-800 rounded-2xl transition-all text-zinc-400 hover:text-white"
+                        className="p-2 hover:bg-white rounded-xl transition-all text-gray-500 hover:text-gray-900"
                     >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="w-5 h-5" />
                     </button>
                 </div>
             </div>
 
-            {/* Calendar Grid */}
-            <div className="space-y-4">
+            <div className="space-y-3">
                 <div className="grid grid-cols-7">
                     {WEEKDAYS.map((day) => (
-                        <div key={day} className="text-center py-4 text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em]">
+                        <div key={day} className="text-center py-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
                             {day}
                         </div>
                     ))}
                 </div>
 
-                <div className="grid grid-cols-7 gap-px bg-zinc-800/20 border border-zinc-800/30 rounded-[2rem] overflow-hidden shadow-inner">
+                <div className="grid grid-cols-7 gap-px bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
                     {days.map((day, dayIdx) => {
-                        // For hackathons, dates are usually ranges. Match logic might be complex.
-                        // For now, let's just show counts if we can't parse exactly yet.
                         const isCurrentMonth = isSameMonth(day, currentDate);
                         const isToday = isSameDay(day, new Date());
 
@@ -131,25 +124,25 @@ export default function HackathonCalendar() {
                             <div
                                 key={day.toString()}
                                 className={cn(
-                                    "min-h-[140px] md:min-h-[160px] p-4 transition-all relative group bg-zinc-950/40",
-                                    !isCurrentMonth && "opacity-20",
-                                    isToday && "bg-indigo-500/5"
+                                    "min-h-[100px] md:min-h-[120px] p-2 transition-all relative group bg-white",
+                                    !isCurrentMonth && "opacity-40",
+                                    isToday && "bg-indigo-50"
                                 )}
                             >
-                                <div className="flex justify-between items-start mb-4">
+                                <div className="flex justify-start mb-2">
                                     <span
                                         className={cn(
-                                            "w-9 h-9 flex items-center justify-center rounded-2xl text-sm font-black transition-all",
+                                            "w-7 h-7 flex items-center justify-center rounded-xl text-sm font-semibold transition-all",
                                             isToday
-                                                ? "bg-indigo-600 text-white shadow-xl shadow-indigo-600/30 ring-2 ring-indigo-400/20"
-                                                : isCurrentMonth ? "text-zinc-400 group-hover:bg-zinc-800 group-hover:text-white" : "text-zinc-700"
+                                                ? "bg-indigo-600 text-white shadow-md"
+                                                : isCurrentMonth ? "text-gray-600 group-hover:bg-gray-100" : "text-gray-300"
                                         )}
                                     >
                                         {format(day, "d")}
                                     </span>
                                 </div>
 
-                                <div className="space-y-1.5 overflow-hidden">
+                                <div className="space-y-1 overflow-hidden">
                                     {dayEvents.slice(0, 2).map((h, i) => (
                                         <a
                                             key={h.id}
@@ -157,18 +150,18 @@ export default function HackathonCalendar() {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={cn(
-                                                "block text-[9px] font-bold p-1.5 rounded-lg border truncate transition-all hover:scale-105",
+                                                "block text-[8px] font-medium p-1.5 rounded-lg border truncate transition-all hover:scale-[1.02]",
                                                 h.featured
-                                                    ? "bg-amber-500/10 text-amber-500 border-amber-500/20"
-                                                    : "bg-zinc-900 text-zinc-400 border-zinc-800"
+                                                    ? "bg-amber-50 text-amber-700 border-amber-200"
+                                                    : "bg-gray-50 text-gray-600 border-gray-200"
                                             )}
                                         >
                                             {h.featured && <Star size={8} className="inline mr-1 fill-amber-500" />}
-                                            {h.title}
+                                            {h.title.length > 12 ? h.title.substring(0, 12) + "..." : h.title}
                                         </a>
                                     ))}
                                     {dayEvents.length > 2 && (
-                                        <p className="text-[8px] text-zinc-600 font-black text-center">+ {dayEvents.length - 2} MORE</p>
+                                        <p className="text-[7px] text-gray-400 font-medium text-center">+ {dayEvents.length - 2} MORE</p>
                                     )}
                                 </div>
                             </div>
@@ -177,12 +170,10 @@ export default function HackathonCalendar() {
                 </div>
             </div>
 
-            <div className="pt-6 flex items-center justify-center gap-3">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-zinc-800" />
-                <p className="text-[9px] text-zinc-600 font-black uppercase tracking-[0.5em]">
-                    Monthwise View Overload
+            <div className="pt-4 flex items-center justify-center gap-3">
+                <p className="text-[9px] text-gray-400 font-medium uppercase tracking-wider">
+                    Monthwise View
                 </p>
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-zinc-800" />
             </div>
         </div>
     );

@@ -106,23 +106,23 @@ const UploadForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-background to-secondary/20">
+    <div className="min-h-screen bg-background pt-28 pb-12">
       <main className="container px-4 md:px-6 py-8 max-w-3xl mx-auto">
         <Button
           variant="ghost"
-          className="mb-6"
+          className="mb-6 text-gray-600 hover:text-gray-900"
           onClick={() => router.back()}
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Contests
         </Button>
 
-        <Card className="border-2 border-primary/10 shadow-md">
-          <CardHeader className="bg-gradient-to-r from-red-500/10 to-red-600/10 pb-8 py-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mb-4">
-              <Youtube className="h-6 w-6 text-white" />
+        <Card className="border border-gray-200 shadow-card">
+          <CardHeader className="bg-gray-50 pb-6 pt-6">
+            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
+              <Youtube className="h-6 w-6 text-red-600" />
             </div>
-            <CardTitle className="text-2xl md:text-3xl">
+            <CardTitle className="text-xl md:text-2xl font-bold text-gray-900">
               Upload YouTube Video
             </CardTitle>           
           </CardHeader>

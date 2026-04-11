@@ -17,7 +17,6 @@ export const SearchFriends = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const debouncedSearch = useDebounce(searchTerm, 500);
 
-    // Reset page on search change
     useEffect(() => {
         setCurrentPage(1);
     }, [debouncedSearch]);
@@ -30,7 +29,7 @@ export const SearchFriends = () => {
             return response.data;
         },
         enabled: debouncedSearch.length > 0,
-        placeholderData: (previousData) => previousData, // Keep old data while fetching
+        placeholderData: (previousData) => previousData,
     });
 
     const users: IndexedProfile[] = data?.users || [];
@@ -52,90 +51,82 @@ export const SearchFriends = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto p-6 space-y-12 pb-40">
-            {/* Ultra Premium Header */}
-            <div className="relative text-center space-y-8 pt-12">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-indigo-500/10 blur-[120px] rounded-full -z-10" />
-
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-indigo-400 text-xs font-bold tracking-widest uppercase mb-4 animate-in fade-in slide-in-from-top-4 duration-1000">
+        <div className="max-w-6xl mx-auto p-6 space-y-8 pb-32">
+            <div className="relative text-center space-y-6 pt-10">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 text-xs font-semibold tracking-wider uppercase mb-4">
                     <Sparkles size={14} className="animate-pulse" />
-                    <span>LeetCode Discovery</span>
+                    <span>User Search</span>
                 </div>
 
-                <h1 className="text-6xl md:text-8xl font-black tracking-tight text-white leading-tight">
-                    Search Your <br />
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 animate-gradient-x">
-                        Buddies
+                <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-tight">
+                    Find <br />
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500">
+                        Profiles
                     </span>
                 </h1>
 
-                <p className="text-zinc-400 max-w-2xl mx-auto text-xl leading-relaxed font-light">
-                    Find and discover your buddies across LeetCode.
+                <p className="text-gray-500 max-w-xl mx-auto text-lg">
+                    Find and discover developer profiles across platforms.
                 </p>
             </div>
 
-            {/* Floating Search Bar Container */}
-            <div className="max-w-3xl mx-auto sticky top-4 z-50">
+            <div className="max-w-xl mx-auto sticky top-4 z-50">
                 <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 rounded-[2.5rem] blur opacity-25 group-focus-within:opacity-60 transition-all duration-500" />
-                    <div className="relative flex items-center bg-zinc-950/90 backdrop-blur-2xl border border-white/10 rounded-[2.2rem] p-2 shadow-2xl">
-                        <Search className="ml-6 text-zinc-500" size={24} />
+                    <div className="relative flex items-center bg-white border border-gray-200 rounded-2xl shadow-soft overflow-hidden">
+                        <Search className="ml-5 text-gray-400" size={20} />
                         <Input
                             type="text"
                             placeholder="Type a name (e.g. aryanc)..."
-                            className="h-16 bg-transparent dark:bg-transparent border-none text-white text-xl placeholder:text-zinc-600 focus-visible:ring-0 focus-visible:ring-offset-0 px-6 shadow-none"
+                            className="h-12 bg-transparent border-none text-gray-900 text-base placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 px-4 shadow-none"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && refetch()}
                         />
                         <Button
                             onClick={() => refetch()}
-                            className="h-14 px-10 rounded-[1.8rem] bg-white text-black hover:bg-zinc-200 font-bold active:scale-95 transition-all hidden md:flex"
+                            className="h-10 px-6 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-medium transition-all mr-1.5 hidden md:flex"
                         >
                             Search
                         </Button>
                     </div>
                 </div>
 
-                {/* Micro Loading bar */}
-                <div className="mt-4 px-8">
+                <div className="mt-3 px-2">
                     {(isLoading || isFetching) && (
-                        <div className="h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
-                            <div className="h-full bg-indigo-500 animate-[loading-shimmer_1.5s_infinite] w-1/3 rounded-full" />
+                        <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-600 animate-pulse w-1/3 rounded-full" />
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Results Section */}
             <div className="space-y-8">
-                {/* Visual Stats Row */}
                 {!isLoading && debouncedSearch && (
-                    <div className="flex flex-wrap items-center justify-between gap-6 px-4">
-                        <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-                                <Hash size={20} className="text-indigo-400" />
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                                <Hash size={18} className="text-blue-600" />
                             </div>
                             <div>
-                                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Available Matches</p>
-                                <p className="text-2xl font-black text-white">{totalFound}</p>
+                                <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Available Matches</p>
+                                <p className="text-xl font-bold text-gray-900">{totalFound}</p>
                             </div>
                         </div>
 
                         {totalPages > 1 && (
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
                                 <Button
                                     variant="outline"
                                     size="icon"
                                     onClick={handlePrevPage}
                                     disabled={currentPage === 1 || isFetching}
-                                    className="h-12 w-12 rounded-2xl bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 disabled:opacity-20 transition-all"
+                                    className="h-10 w-10 rounded-xl border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 disabled:opacity-30 transition-all"
                                 >
-                                    <ChevronLeft size={20} />
+                                    <ChevronLeft size={18} />
                                 </Button>
 
-                                <div className="px-6 h-12 flex items-center justify-center rounded-2xl bg-zinc-900/50 border border-zinc-800 text-sm font-black text-zinc-400">
-                                    <span className="text-white mr-1.5">{currentPage}</span> / {totalPages}
+                                <div className="px-4 h-10 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-medium text-gray-600">
+                                    <span className="text-gray-900 mr-1">{currentPage}</span> / {totalPages}
                                 </div>
 
                                 <Button
@@ -143,69 +134,63 @@ export const SearchFriends = () => {
                                     size="icon"
                                     onClick={handleNextPage}
                                     disabled={currentPage === totalPages || isFetching}
-                                    className="h-12 w-12 rounded-2xl bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 disabled:opacity-20 transition-all"
+                                    className="h-10 w-10 rounded-xl border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 disabled:opacity-30 transition-all"
                                 >
-                                    <ChevronRight size={20} />
+                                    <ChevronRight size={18} />
                                 </Button>
                             </div>
                         )}
                     </div>
                 )}
 
-                {/* The Grid / Skeletons */}
-                <div className="min-h-[600px] relative">
+                <div className="min-h-[500px] relative">
                     {(isLoading || (isFetching && users.length === 0)) ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
                             {[...Array(12)].map((_, i) => (
-                                <div key={i} className="p-8 bg-zinc-900/40 rounded-[2.5rem] border border-zinc-800/50 space-y-8">
-                                    <div className="flex items-center gap-6">
-                                        <Skeleton className="w-20 h-20 rounded-3xl" />
-                                        <div className="space-y-3 flex-1">
-                                            <Skeleton className="h-5 w-3/4 rounded-full" />
-                                            <Skeleton className="h-4 w-1/2 rounded-full" />
+                                <div key={i} className="p-6 bg-white rounded-2xl border border-gray-100 shadow-card space-y-6">
+                                    <div className="flex items-center gap-4">
+                                        <Skeleton className="w-16 h-16 rounded-2xl" />
+                                        <div className="space-y-2 flex-1">
+                                            <Skeleton className="h-4 w-3/4 rounded-full" />
+                                            <Skeleton className="h-3 w-1/2 rounded-full" />
                                         </div>
                                     </div>
-                                    <Skeleton className="h-10 w-full rounded-xl" />
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <Skeleton className="h-16 rounded-[1.5rem]" />
-                                        <Skeleton className="h-16 rounded-[1.5rem]" />
+                                    <Skeleton className="h-9 w-full rounded-lg" />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Skeleton className="h-14 rounded-xl" />
+                                        <Skeleton className="h-14 rounded-xl" />
                                     </div>
                                 </div>
                             ))}
                         </div>
                     ) : users.length > 0 ? (
                         <div className={cn(
-                            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 transition-all duration-500",
-                            isFetching ? "opacity-30 blur-md grayscale scale-95" : "opacity-100 scale-100"
+                            "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-2 transition-all duration-300",
+                            isFetching ? "opacity-30 blur-sm" : "opacity-100"
                         )}>
                             {users.map((user, idx) => (
                                 <div
                                     key={`${user.platform}-${user.username}-${currentPage}-${idx}`}
-                                    className="animate-in fade-in zoom-in-95 duration-500"
-                                    style={{ animationDelay: `${idx * 50}ms` }}
                                 >
                                     <UserCard user={user} />
                                 </div>
                             ))}
                         </div>
                     ) : debouncedSearch && !isLoading ? (
-                        <div className="flex flex-col items-center justify-center py-40 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                            <div className="relative">
-                                <div className="absolute -inset-8 bg-indigo-500/20 blur-[60px] rounded-full animate-pulse" />
-                                <div className="relative w-32 h-32 bg-zinc-900 rounded-[3rem] border border-zinc-800 flex items-center justify-center text-zinc-700">
-                                    <Users size={64} />
-                                </div>
+                        <div className="flex flex-col items-center justify-center py-32 space-y-6">
+                            <div className="w-24 h-24 bg-gray-50 rounded-3xl border border-gray-100 flex items-center justify-center text-gray-300">
+                                <Users size={48} />
                             </div>
-                            <div className="text-center space-y-4">
-                                <h3 className="text-3xl font-black text-white">No matches detected</h3>
-                                <p className="text-zinc-500 max-w-md mx-auto text-lg">
-                                    Our search probes couldn't find anyone matching "{debouncedSearch}" in the cluster.
+                            <div className="text-center space-y-2">
+                                <h3 className="text-2xl font-bold text-gray-900">No results found</h3>
+                                <p className="text-gray-500 max-w-sm mx-auto">
+                                    We couldn't find any users matching "{debouncedSearch}".
                                 </p>
                             </div>
                             <Button
                                 variant="outline"
                                 onClick={() => setSearchTerm('')}
-                                className="rounded-full px-8 border-zinc-800 text-white"
+                                className="rounded-full px-6 border-gray-200 text-gray-600"
                             >
                                 Clear Search
                             </Button>
@@ -213,26 +198,22 @@ export const SearchFriends = () => {
                     ) : null}
                 </div>
 
-                {/* Footer Pagination */}
                 {!isLoading && totalPages > 1 && (
-                    <div className="flex flex-col items-center gap-8 py-20 pb-40">
-                        <div className="h-px w-32 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
-
-                        <div className="flex items-center gap-2 p-2 bg-zinc-900/60 backdrop-blur-xl rounded-[2rem] border border-zinc-800/50 shadow-2xl">
+                    <div className="flex flex-col items-center gap-6 py-16">
+                        <div className="flex items-center gap-1.5 p-1.5 bg-white rounded-2xl border border-gray-100 shadow-card">
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={handlePrevPage}
                                 disabled={currentPage === 1 || isFetching}
-                                className="h-12 w-12 rounded-[1.2rem] text-zinc-500 hover:bg-white/5 disabled:opacity-10"
+                                className="h-10 w-10 rounded-xl text-gray-500 hover:bg-gray-100 disabled:opacity-30"
                             >
-                                <ChevronLeft size={20} />
+                                <ChevronLeft size={18} />
                             </Button>
 
-                            <div className="flex px-2">
+                            <div className="flex px-1">
                                 {[...Array(totalPages)].map((_, i) => {
                                     const pageNum = i + 1;
-                                    // Complex pagination logic to only show nearby pages
                                     if (
                                         pageNum === 1 ||
                                         pageNum === totalPages ||
@@ -246,10 +227,10 @@ export const SearchFriends = () => {
                                                     window.scrollTo({ top: 0, behavior: 'smooth' });
                                                 }}
                                                 className={cn(
-                                                    "w-12 h-12 rounded-[1.2rem] text-sm font-bold transition-all",
+                                                    "w-10 h-10 rounded-xl text-sm font-medium transition-all",
                                                     currentPage === pageNum
-                                                        ? "bg-indigo-600 text-white shadow-xl shadow-indigo-600/30 ring-2 ring-indigo-400/20"
-                                                        : "text-zinc-500 hover:text-white hover:bg-white/5"
+                                                        ? "bg-blue-600 text-white shadow-sm"
+                                                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                                                 )}
                                             >
                                                 {pageNum}
@@ -257,7 +238,7 @@ export const SearchFriends = () => {
                                         );
                                     }
                                     if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
-                                        return <span key={pageNum} className="w-8 flex items-center justify-center text-zinc-700">...</span>;
+                                        return <span key={pageNum} className="w-6 flex items-center justify-center text-gray-300">...</span>;
                                     }
                                     return null;
                                 })}
@@ -268,25 +249,20 @@ export const SearchFriends = () => {
                                 size="icon"
                                 onClick={handleNextPage}
                                 disabled={currentPage === totalPages || isFetching}
-                                className="h-12 w-12 rounded-[1.2rem] text-zinc-500 hover:bg-white/5 disabled:opacity-10"
+                                className="h-10 w-10 rounded-xl text-gray-500 hover:bg-gray-100 disabled:opacity-30"
                             >
-                                <ChevronRight size={20} />
+                                <ChevronRight size={18} />
                             </Button>
                         </div>
 
-                        <p className="text-[10px] text-zinc-700 font-bold uppercase tracking-[0.4em]">
-                            {currentPage === totalPages ? "End of Results" : "Next Slide Awaits"}
+                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+                            {currentPage === totalPages ? "End of Results" : "Next Page"}
                         </p>
                     </div>
                 )}
             </div>
 
-            {/* Bottom Credits */}
-            <div className="py-20 text-center relative">
-                <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-900 to-transparent -z-10" />
-                <p className="inline-block px-12 bg-zinc-950 text-[11px] text-zinc-600 font-bold uppercase tracking-[0.5em] leading-relaxed">
-                    Designed for Elite Performance. Engineered for the Social Ecosystem.
-                </p>
+            <div className="py-16 text-center">
             </div>
         </div>
     );

@@ -45,15 +45,14 @@ export default function ContestsSearch() {
   }, [searchParams]);
 
   return (
-    <div className="flex-1 max-w-2xl w-full">
+    <div className="flex-1 max-w-xl w-full">
       <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl blur opacity-20 group-focus-within:opacity-40 transition-all duration-500" />
-        <div className="relative flex items-center bg-zinc-950/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-1.5 shadow-2xl">
-          <Search className="ml-4 text-zinc-500" size={20} />
+        <div className="relative flex items-center bg-white border border-gray-200 rounded-2xl shadow-soft overflow-hidden">
+          <Search className="ml-4 text-gray-400" size={18} />
           <Input
             type="text"
             placeholder="Search contests by name..."
-            className="h-12 bg-transparent dark:bg-transparent bg-none border-none text-white placeholder:text-zinc-600 focus-visible:ring-0 shadow-none px-4"
+            className="h-11 bg-transparent border-none text-gray-900 placeholder:text-gray-400 focus-visible:ring-0 shadow-none px-3"
             value={inputVal}
             onChange={handleChange}
           />

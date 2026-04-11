@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function SearchPage() {
     return (
-        <main className="min-h-screen pt-20 pb-12 bg-black">
+        <main className="min-h-screen pt-20 pb-12 bg-background">
             <SearchFriends />
         </main>
     );

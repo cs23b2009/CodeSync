@@ -46,8 +46,8 @@ export default function EmailPopover({
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-96 relative">
+        <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-50">
+            <div className="bg-white rounded-xl shadow-2xl p-6 w-96 relative border border-gray-200">
                 <div className="text-lg font-semibold mb-4">
                     <div className="flex items-center justify-between">
                         Set Email Reminder

@@ -39,7 +39,7 @@ function getLeetCodeRank(rating: number) {
     if (rating >= 2150) return { name: "Guardian", color: "text-orange-400", badge: "🛡️" };
     if (rating >= 1850) return { name: "Knight", color: "text-purple-400", badge: "⚔️" };
     if (rating >= 1500) return { name: "Warrior", color: "text-blue-400", badge: "🤺" };
-    return { name: "Newbie", color: "text-zinc-400", badge: "🐣" };
+    return { name: "Newbie", color: "text-gray-400", badge: "🐣" };
 }
 
 function getCodeChefStars(rating: number) {
@@ -220,14 +220,14 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
             const { toPng } = await import('html-to-image');
             const dataUrl = await toPng(exportRef.current, {
                 cacheBust: true,
-                backgroundColor: '#09090b',
-                pixelRatio: 2, // 2x is plenty for 1080p base, equals ~2160p
+                backgroundColor: '#ffffff',
+                pixelRatio: 2, 
                 width: 1080,
                 height: 1350,
                 style: {
-                    transform: 'none', // Critical: Force no transform during capture
+                    transform: 'none', 
                     margin: '0',
-                    padding: '3.5rem' // Match the p-14 (56px) approx
+                    padding: '3.5rem' 
                 }
             });
             const link = document.createElement("a");
@@ -262,46 +262,46 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
     const renderCard = (ref: any) => (
         <div
             ref={ref}
-            className="relative w-[1080px] h-[1350px] bg-[#09090b] p-14 rounded-[48px] shadow-2xl overflow-hidden border border-zinc-800 flex flex-col justify-between ml-auto mr-auto"
+            className="relative w-[1080px] h-[1350px] bg-white p-14 rounded-[48px] shadow-2xl overflow-hidden border border-gray-100 flex flex-col justify-between ml-auto mr-auto"
         >
             {/* Decorative Background */}
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-500/10 rounded-full blur-[150px] pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-fuchsia-500/10 rounded-full blur-[150px] pointer-events-none"></div>
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.04] pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-50/50 rounded-full blur-[150px] pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-50/50 rounded-full blur-[150px] pointer-events-none"></div>
+            <div className="absolute inset-0 bg-grid-cream opacity-50 pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col gap-8 flex-grow">
 
                 {/* Header Layout: Top Row (Solved & Days) */}
                 <div className="grid grid-cols-2 gap-8 h-[360px]">
                     {/* Total Questions Hero */}
-                    <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-[40px] p-10 relative overflow-hidden flex flex-col justify-between group">
-                        <div className="absolute right-8 top-8 text-zinc-800/50 group-hover:text-zinc-700 transition-colors duration-500">
+                    <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[40px] p-10 relative overflow-hidden flex flex-col justify-between group shadow-sm">
+                        <div className="absolute right-8 top-8 text-gray-100 group-hover:text-gray-200 transition-colors duration-500">
                             <CheckCircle2 size={100} strokeWidth={1} />
                         </div>
                         <div>
-                            <h3 className="text-zinc-400 text-sm font-bold uppercase tracking-[0.3em] mb-4">Total Solved</h3>
-                            <div className="text-9xl font-black bg-gradient-to-br from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent leading-none -ml-1">
+                            <h3 className="text-gray-400 text-sm font-bold uppercase tracking-[0.3em] mb-4">Total Solved</h3>
+                            <div className="text-9xl font-black bg-gradient-to-br from-gray-900 via-gray-700 to-gray-500 bg-clip-text text-transparent leading-none -ml-1">
                                 {stats.totalSolved}
                             </div>
                         </div>
-                        <div className="flex items-center gap-3 text-lg font-medium text-emerald-400 bg-emerald-400/10 px-4 py-2 rounded-full w-fit border border-emerald-400/20">
+                        <div className="flex items-center gap-3 text-lg font-medium text-blue-600 bg-blue-50 px-4 py-2 rounded-full w-fit border border-blue-100">
                             <Trophy size={20} />
                             TOP {(100 - (stats.totalSolved > 500 ? 90 : stats.totalSolved / 10)).toFixed(0)}% GLOBAL
                         </div>
                     </div>
 
                     {/* Active Days */}
-                    <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-[40px] p-10 relative overflow-hidden flex flex-col justify-between group">
-                        <div className="absolute right-8 top-8 text-zinc-800/50 group-hover:text-zinc-700 transition-colors duration-500">
+                    <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[40px] p-10 relative overflow-hidden flex flex-col justify-between group shadow-sm">
+                        <div className="absolute right-8 top-8 text-gray-100 group-hover:text-gray-200 transition-colors duration-500">
                             <Calendar size={100} strokeWidth={1} />
                         </div>
                         <div>
-                            <h3 className="text-zinc-400 text-sm font-bold uppercase tracking-[0.3em] mb-4">Active Days</h3>
-                            <div className="text-9xl font-black text-white leading-none -ml-1">
+                            <h3 className="text-gray-400 text-sm font-bold uppercase tracking-[0.3em] mb-4">Active Days</h3>
+                            <div className="text-9xl font-black text-gray-900 leading-none -ml-1">
                                 {stats.activeDays}
                             </div>
                         </div>
-                        <div className="flex items-center gap-3 text-lg font-medium text-amber-400 bg-amber-400/10 px-4 py-2 rounded-full w-fit border border-amber-400/20">
+                        <div className="flex items-center gap-3 text-lg font-medium text-amber-600 bg-amber-50 px-4 py-2 rounded-full w-fit border border-amber-100">
                             <Flame size={20} />
                             {stats.maxStreak} DAY MAX STREAK
                         </div>
@@ -315,33 +315,33 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                     <div className="col-span-2 flex flex-col gap-8 h-full">
 
                         {/* Total Contests Strip */}
-                        <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-[40px] p-8 flex items-center justify-between h-[180px] px-12 relative overflow-hidden">
-                            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-zinc-900/80 to-transparent"></div>
+                        <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[40px] p-8 flex items-center justify-between h-[180px] px-12 relative overflow-hidden shadow-sm">
+                            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white/80 to-transparent"></div>
                             <div className="flex flex-col justify-center">
-                                <h3 className="text-zinc-400 text-sm font-bold uppercase tracking-[0.3em] mb-2">Total Contests</h3>
-                                <div className="text-7xl font-black text-white">{stats.totalContests}</div>
+                                <h3 className="text-gray-400 text-sm font-bold uppercase tracking-[0.3em] mb-2">Total Contests</h3>
+                                <div className="text-7xl font-black text-gray-900">{stats.totalContests}</div>
                             </div>
                             <div className="flex items-center gap-10 z-10">
                                 <div className="flex flex-col items-center gap-2">
                                     <PlatformLogo platform="leetcode" size={32} />
-                                    <span className="text-2xl font-bold text-zinc-300">{lcStat?.contestCount || 0}</span>
+                                    <span className="text-2xl font-bold text-gray-700">{lcStat?.contestCount || 0}</span>
                                 </div>
-                                <div className="w-px h-12 bg-zinc-800"></div>
+                                <div className="w-px h-12 bg-gray-100"></div>
                                 <div className="flex flex-col items-center gap-2">
                                     <PlatformLogo platform="codechef" size={32} />
-                                    <span className="text-2xl font-bold text-zinc-300">{ccStat?.contestCount || 0}</span>
+                                    <span className="text-2xl font-bold text-gray-700">{ccStat?.contestCount || 0}</span>
                                 </div>
-                                <div className="w-px h-12 bg-zinc-800"></div>
+                                <div className="w-px h-12 bg-gray-100"></div>
                                 <div className="flex flex-col items-center gap-2">
-                                    <div className="text-yellow-400"><PlatformLogo platform="codeforces" size={32} /></div>
-                                    <span className="text-2xl font-bold text-zinc-300">{cfStat?.contestCount || 0}</span>
+                                    <div className="text-yellow-600"><PlatformLogo platform="codeforces" size={32} /></div>
+                                    <span className="text-2xl font-bold text-gray-700">{cfStat?.contestCount || 0}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Problem Distribution (Expanded) */}
-                        <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-[40px] p-10 flex-grow flex flex-col justify-center relative overflow-hidden">
-                            <h3 className="absolute top-10 left-10 text-zinc-400 text-sm font-bold uppercase tracking-[0.3em]">Problem Distribution</h3>
+                        <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[40px] p-10 flex-grow flex flex-col justify-center relative overflow-hidden shadow-sm">
+                            <h3 className="absolute top-10 left-10 text-gray-400 text-sm font-bold uppercase tracking-[0.3em]">Problem Distribution</h3>
 
                             <div className="flex items-center justify-between px-6 pt-8">
                                 {/* Donut Chart */}
@@ -365,42 +365,42 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                                         </PieChart>
                                     </ResponsiveContainer>
                                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                        <span className="text-sm font-bold text-zinc-500 uppercase tracking-widest">Solved</span>
-                                        <span className="text-5xl font-black text-white">{stats.totalSolved}</span>
+                                        <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Solved</span>
+                                        <span className="text-5xl font-black text-gray-900">{stats.totalSolved}</span>
                                     </div>
                                 </div>
 
                                 {/* Breakdown Stats */}
                                 <div className="flex flex-col gap-5 w-[320px]">
-                                    <div className="bg-zinc-950/60 rounded-2xl p-5 border border-zinc-800/80 flex items-center justify-between">
+                                    <div className="bg-gray-50/50 rounded-2xl p-5 border border-gray-100 flex items-center justify-between">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-2 h-10 rounded-full bg-[#00af9b] shadow-[0_0_15px_rgba(0,175,155,0.4)]"></div>
+                                            <div className="w-2 h-10 rounded-full bg-[#00af9b] shadow-[0_0_15px_rgba(0,175,155,0.2)]"></div>
                                             <div>
-                                                <div className="text-white font-bold text-2xl">Easy</div>
-                                                <div className="text-zinc-500 text-sm font-medium">Fundamentals</div>
+                                                <div className="text-gray-900 font-bold text-2xl">Easy</div>
+                                                <div className="text-gray-500 text-sm font-medium">Fundamentals</div>
                                             </div>
                                         </div>
-                                        <div className="text-3xl font-black text-white">{stats.easySolved}</div>
+                                        <div className="text-3xl font-black text-gray-900">{stats.easySolved}</div>
                                     </div>
-                                    <div className="bg-zinc-950/60 rounded-2xl p-5 border border-zinc-800/80 flex items-center justify-between">
+                                    <div className="bg-gray-50/50 rounded-2xl p-5 border border-gray-100 flex items-center justify-between">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-2 h-10 rounded-full bg-[#ffb800] shadow-[0_0_15px_rgba(255,184,0,0.4)]"></div>
+                                            <div className="w-2 h-10 rounded-full bg-[#ffb800] shadow-[0_0_15px_rgba(255,184,0,0.2)]"></div>
                                             <div>
-                                                <div className="text-white font-bold text-2xl">Medium</div>
-                                                <div className="text-zinc-500 text-sm font-medium">Algorithms</div>
+                                                <div className="text-gray-900 font-bold text-2xl">Medium</div>
+                                                <div className="text-gray-500 text-sm font-medium">Algorithms</div>
                                             </div>
                                         </div>
-                                        <div className="text-3xl font-black text-white">{stats.mediumSolved}</div>
+                                        <div className="text-3xl font-black text-gray-900">{stats.mediumSolved}</div>
                                     </div>
-                                    <div className="bg-zinc-950/60 rounded-2xl p-5 border border-zinc-800/80 flex items-center justify-between">
+                                    <div className="bg-gray-50/50 rounded-2xl p-5 border border-gray-100 flex items-center justify-between">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-2 h-10 rounded-full bg-[#ff2d55] shadow-[0_0_15px_rgba(255,45,85,0.4)]"></div>
+                                            <div className="w-2 h-10 rounded-full bg-[#ff2d55] shadow-[0_0_15px_rgba(255,45,85,0.2)]"></div>
                                             <div>
-                                                <div className="text-white font-bold text-2xl">Hard</div>
-                                                <div className="text-zinc-500 text-sm font-medium">Advanced</div>
+                                                <div className="text-gray-900 font-bold text-2xl">Hard</div>
+                                                <div className="text-gray-500 text-sm font-medium">Advanced</div>
                                             </div>
                                         </div>
-                                        <div className="text-3xl font-black text-white">{stats.hardSolved}</div>
+                                        <div className="text-3xl font-black text-gray-900">{stats.hardSolved}</div>
                                     </div>
                                 </div>
                             </div>
@@ -408,34 +408,34 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                     </div>
 
                     {/* RIGHT COLUMN (Rankings) */}
-                    <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-[40px] p-10 flex flex-col h-full relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-40 bg-white/5 blur-[100px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
-                        <h3 className="text-zinc-400 text-sm font-bold uppercase tracking-[0.3em] mb-12 text-center z-10">Global Rankings</h3>
+                    <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[40px] p-10 flex flex-col h-full relative overflow-hidden shadow-sm">
+                        <div className="absolute top-0 right-0 p-40 bg-blue-50/20 blur-[100px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+                        <h3 className="text-gray-400 text-sm font-bold uppercase tracking-[0.3em] mb-12 text-center z-10">Global Rankings</h3>
 
                         <div className="flex flex-col gap-6 flex-grow z-10">
                             {/* LeetCode */}
-                            <div className="bg-zinc-950/80 border border-zinc-800 rounded-3xl p-6 flex flex-col gap-4 shadow-xl">
+                            <div className="bg-white border border-gray-100 rounded-3xl p-6 flex flex-col gap-4 shadow-sm">
                                 <div className="flex items-center gap-4">
-                                    <div className="bg-[#2a2a2a] p-3 rounded-xl"><PlatformLogo platform="leetcode" size={24} /></div>
-                                    <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">LeetCode</span>
+                                    <div className="bg-gray-50 p-3 rounded-xl"><PlatformLogo platform="leetcode" size={24} /></div>
+                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">LeetCode</span>
                                 </div>
                                 <div className="flex items-end justify-between">
-                                    <div className="text-4xl font-black text-white">{lcStat?.contestRating || "-"}</div>
-                                    <span className={`px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-bold ${lcRank.color} mb-1 shadow-inner`}>
+                                    <div className="text-4xl font-black text-gray-900">{lcStat?.contestRating || "-"}</div>
+                                    <span className={`px-4 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-sm font-bold ${lcRank.color} mb-1 shadow-sm`}>
                                         {lcStat?.contestRating ? lcRank.name : "Unrated"}
                                     </span>
                                 </div>
                             </div>
 
                             {/* CodeChef */}
-                            <div className="bg-zinc-950/80 border border-zinc-800 rounded-3xl p-6 flex flex-col gap-4 shadow-xl">
+                            <div className="bg-white border border-gray-100 rounded-3xl p-6 flex flex-col gap-4 shadow-sm">
                                 <div className="flex items-center gap-4">
-                                    <div className="bg-[#2a2a2a] p-3 rounded-xl"><PlatformLogo platform="codechef" size={24} /></div>
-                                    <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">CodeChef</span>
+                                    <div className="bg-gray-50 p-3 rounded-xl"><PlatformLogo platform="codechef" size={24} /></div>
+                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">CodeChef</span>
                                 </div>
                                 <div className="flex items-end justify-between">
-                                    <div className="text-4xl font-black text-white">{ccStat?.contestRating || "-"}</div>
-                                    <span className={`px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-bold ${ccStars.color} mb-1 flex items-center gap-2 shadow-inner`}>
+                                    <div className="text-4xl font-black text-gray-900">{ccStat?.contestRating || "-"}</div>
+                                    <span className={`px-4 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-sm font-bold ${ccStars.color} mb-1 flex items-center gap-2 shadow-sm`}>
                                         {ccStat?.contestRating ? `${ccStars.stars} STAR` : "Unrated"}
                                         {ccStat?.contestRating > 0 && <Star size={14} fill="currentColor" />}
                                     </span>
@@ -443,14 +443,14 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                             </div>
 
                             {/* CodeForces */}
-                            <div className="bg-zinc-950/80 border border-zinc-800 rounded-3xl p-6 flex flex-col gap-4 shadow-xl">
+                            <div className="bg-white border border-gray-100 rounded-3xl p-6 flex flex-col gap-4 shadow-sm">
                                 <div className="flex items-center gap-4">
-                                    <div className="bg-[#2a2a2a] p-3 rounded-xl text-yellow-500"><PlatformLogo platform="codeforces" size={24} /></div>
-                                    <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">CodeForces</span>
+                                    <div className="bg-gray-50 p-3 rounded-xl text-yellow-600"><PlatformLogo platform="codeforces" size={24} /></div>
+                                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">CodeForces</span>
                                 </div>
                                 <div className="flex items-end justify-between">
-                                    <div className="text-4xl font-black text-white">{cfStat?.contestRating || "-"}</div>
-                                    <span className={`px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm font-bold ${cfRank.color} mb-1 shadow-inner`}>
+                                    <div className="text-4xl font-black text-gray-900">{cfStat?.contestRating || "-"}</div>
+                                    <span className={`px-4 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-sm font-bold ${cfRank.color} mb-1 shadow-sm`}>
                                         {cfStat?.contestRating ? cfRank.name : "Unrated"}
                                     </span>
                                 </div>
@@ -461,13 +461,13 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
             </div>
 
             {/* Footer Brand */}
-            <div className="flex justify-between items-center text-zinc-500 border-t border-zinc-800/80 pt-8 mt-2">
+            <div className="flex justify-between items-center text-gray-400 border-t border-gray-100 pt-8 mt-2">
                 <div className="text-sm font-mono tracking-tight">
-                    GENERATED BY <span className="text-zinc-300 font-bold">CODESYNC PRO</span>
+                    GENERATED BY <span className="text-gray-900 font-bold uppercase">CodeSync</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm font-mono bg-zinc-900/80 border border-zinc-800 px-5 py-2 rounded-full">
-                    <CheckCircle2 size={16} className="text-emerald-500" />
-                    codesync.pro
+                <div className="flex items-center gap-3 text-sm font-mono bg-white border border-gray-100 px-5 py-2 rounded-full">
+                    <CheckCircle2 size={16} className="text-blue-500" />
+                    codesync.app
                 </div>
             </div>
         </div>
@@ -494,20 +494,20 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                 </div>
             ) : (
                 /* Input Section (Only if no data) */
-                <div className="grid gap-4 md:grid-cols-4 items-end bg-zinc-900/50 p-6 rounded-xl border border-zinc-800/50 backdrop-blur-sm">
+                <div className="grid gap-4 md:grid-cols-4 items-end bg-white/50 p-6 rounded-xl border border-gray-100 backdrop-blur-sm">
                     <div className="grid gap-2">
-                        <Label className="text-zinc-400">LeetCode</Label>
-                        <Input value={leetcode} onChange={(e) => setLeetcode(e.target.value)} placeholder="Username" className="bg-zinc-950/50 border-zinc-800 text-white" />
+                        <Label className="text-gray-500">LeetCode</Label>
+                        <Input value={leetcode} onChange={(e) => setLeetcode(e.target.value)} placeholder="Username" className="bg-white border-gray-200 text-gray-900 focus:ring-blue-500" />
                     </div>
                     <div className="grid gap-2">
-                        <Label className="text-zinc-400">CodeForces</Label>
-                        <Input value={codeforces} onChange={(e) => setCodeforces(e.target.value)} placeholder="Handle" className="bg-zinc-950/50 border-zinc-800 text-white" />
+                        <Label className="text-gray-500">CodeForces</Label>
+                        <Input value={codeforces} onChange={(e) => setCodeforces(e.target.value)} placeholder="Handle" className="bg-white border-gray-200 text-gray-900 focus:ring-blue-500" />
                     </div>
                     <div className="grid gap-2">
-                        <Label className="text-zinc-400">CodeChef</Label>
-                        <Input value={codechef} onChange={(e) => setCodechef(e.target.value)} placeholder="Handle" className="bg-zinc-950/50 border-zinc-800 text-white" />
+                        <Label className="text-gray-500">CodeChef</Label>
+                        <Input value={codechef} onChange={(e) => setCodechef(e.target.value)} placeholder="Handle" className="bg-white border-gray-200 text-gray-900 focus:ring-blue-500" />
                     </div>
-                    <Button onClick={handleFetch} disabled={loading} className="bg-zinc-100 text-zinc-900 hover:bg-zinc-200">
+                    <Button onClick={handleFetch} disabled={loading} className="bg-blue-600 text-white hover:bg-blue-700">
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sync Stats
                     </Button>
                 </div>
@@ -515,10 +515,10 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
 
             {/* EXPORT OVERLAY (The only one that gets captured) */}
             {isExporting && (
-                <div className="fixed inset-0 z-[9999] bg-[#09090b] flex items-center justify-center">
+                <div className="fixed inset-0 z-[9999] bg-white flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
-                        <Loader2 className="animate-spin text-white mb-4" size={48} />
-                        <span className="text-zinc-400 font-mono">Subliming pixels...</span>
+                        <Loader2 className="animate-spin text-blue-600 mb-4" size={48} />
+                        <span className="text-gray-500 font-mono">Generating poster...</span>
                         {/* Hidden Export Node (Mounted but centered and clean) */}
                         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 pointer-events-none">
                             {renderCard(exportRef)}
@@ -529,7 +529,7 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
 
             {/* PREVIEW MODAL (Clean Lightbox Mode) */}
             {data.length > 0 && showModal && !isExporting && (
-                <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center animate-in fade-in duration-300 overflow-y-auto no-scrollbar">
+                <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md flex items-center justify-center animate-in fade-in duration-300 overflow-y-auto no-scrollbar">
                     <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
 
                     {/* Close Button (Top Right) */}
@@ -538,7 +538,7 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                             onClick={() => setShowModal(false)}
                             size="icon"
                             variant="ghost"
-                            className="text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-full h-12 w-12 transition-colors"
+                            className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-full h-12 w-12 transition-colors"
                         >
                             <X size={32} />
                         </Button>
@@ -547,7 +547,7 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                     {/* Card Preview (Centered, Scaled to Fit) */}
                     {/* Width/Height Wrapper ensures scrollable area handles the scale properly */}
                     <div className="min-h-full w-full flex items-center justify-center p-10">
-                        <div style={{ transform: 'scale(0.55)' }} className="w-[1080px] h-[1350px] flex-shrink-0 select-none shadow-2xl shadow-black origin-center">
+                        <div style={{ transform: 'scale(0.55)' }} className="w-[1080px] h-[1350px] flex-shrink-0 select-none shadow-2xl shadow-gray-200 origin-center">
                             {renderCard(cardRef)}
                         </div>
                     </div>
@@ -556,7 +556,7 @@ export default function CombinedHeatmap({ preloadedData, preloadedStats, preload
                     <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[120]">
                         <Button
                             onClick={downloadCard}
-                            className="bg-white text-black hover:bg-zinc-200 rounded-full h-14 px-8 font-bold text-lg shadow-xl shadow-white/5 transition-all hover:scale-105 active:scale-95"
+                            className="bg-blue-600 text-white hover:bg-blue-700 rounded-full h-14 px-8 font-bold text-lg shadow-lg transition-all hover:scale-105 active:scale-95"
                         >
                             <Download size={20} className="mr-2" />
                             Download Poster

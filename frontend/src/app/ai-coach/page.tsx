@@ -21,15 +21,13 @@ import { cn } from "@/lib/utils";
 import Footer from "@/components/Footer";
 import type { SkillAnalysis, PracticeDay } from "@/services/skillAnalysis";
 import type { TopicRecommendation } from "@/services/recommendations";
+
 interface AICoachAdvice {
     text: string;
     error?: string;
     fromCache?: boolean;
 }
 
-// ──────────────────────────────────────────────────────────────
-//  Types
-// ──────────────────────────────────────────────────────────────
 interface AICoachResponse {
     skillAnalysis: SkillAnalysis;
     recommendations: TopicRecommendation[];
@@ -38,30 +36,24 @@ interface AICoachResponse {
     meta: { totalSolved: number; maxRating: number };
 }
 
-// ──────────────────────────────────────────────────────────────
-//  Utility helpers
-// ──────────────────────────────────────────────────────────────
 const LEVEL_CONFIG = {
-    weak: { label: "Weak", color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30", dot: "bg-red-400" },
-    medium: { label: "Medium", color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/30", dot: "bg-yellow-400" },
-    strong: { label: "Strong", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/30", dot: "bg-emerald-400" },
+    weak: { label: "Weak", color: "text-red-600", bg: "bg-red-50", border: "border-red-200", dot: "bg-red-500" },
+    medium: { label: "Medium", color: "text-yellow-600", bg: "bg-yellow-50", border: "border-yellow-200", dot: "bg-yellow-500" },
+    strong: { label: "Strong", color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-200", dot: "bg-emerald-500" },
 };
 
 const DIFF_CONFIG = {
-    easy: { label: "Easy", color: "text-emerald-400", bg: "bg-emerald-500/10" },
-    medium: { label: "Medium", color: "text-yellow-400", bg: "bg-yellow-500/10" },
-    hard: { label: "Hard", color: "text-red-400", bg: "bg-red-500/10" },
+    easy: { label: "Easy", color: "text-emerald-600", bg: "bg-emerald-50" },
+    medium: { label: "Medium", color: "text-yellow-600", bg: "bg-yellow-50" },
+    hard: { label: "Hard", color: "text-red-600", bg: "bg-red-50" },
 };
 
-// ──────────────────────────────────────────────────────────────
-//  Sub-components
-// ──────────────────────────────────────────────────────────────
 function SkillBadge({ level, name, count }: { level: "weak" | "medium" | "strong"; name: string; count: number }) {
     const cfg = LEVEL_CONFIG[level];
     return (
         <div className={cn("flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium", cfg.bg, cfg.border)}>
             <span className={cn("w-2 h-2 rounded-full shrink-0", cfg.dot)} />
-            <span className="text-zinc-200 truncate max-w-[130px]">{name}</span>
+            <span className="text-gray-700 truncate max-w-[130px]">{name}</span>
             <span className={cn("ml-auto text-xs font-bold", cfg.color)}>{count}</span>
         </div>
     );
@@ -70,18 +62,18 @@ function SkillBadge({ level, name, count }: { level: "weak" | "medium" | "strong
 function PracticeDayCard({ day }: { day: PracticeDay }) {
     const cfg = DIFF_CONFIG[day.difficulty];
     return (
-        <div className="flex gap-4 items-start p-4 bg-zinc-900/40 border border-zinc-800/60 rounded-2xl hover:border-zinc-700 transition-colors">
-            <div className="shrink-0 w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
-                <span className="text-blue-400 font-black text-sm">{day.day}</span>
+        <div className="flex gap-4 items-start p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+            <div className="shrink-0 w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                <span className="text-blue-600 font-bold text-sm">{day.day}</span>
             </div>
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span className="text-zinc-100 font-semibold text-sm">{day.topic}</span>
-                    <span className={cn("text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full", cfg.bg, cfg.color)}>
+                    <span className="text-gray-900 font-semibold text-sm">{day.topic}</span>
+                    <span className={cn("text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full", cfg.bg, cfg.color)}>
                         {cfg.label}
                     </span>
                 </div>
-                <p className="text-zinc-500 text-xs leading-relaxed">{day.focus}</p>
+                <p className="text-gray-500 text-xs leading-relaxed">{day.focus}</p>
             </div>
         </div>
     );
@@ -90,21 +82,21 @@ function PracticeDayCard({ day }: { day: PracticeDay }) {
 function RecommendationCard({ rec }: { rec: TopicRecommendation }) {
     const [open, setOpen] = useState(false);
     return (
-        <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-2xl overflow-hidden">
+        <div className="bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden">
             <button
                 onClick={() => setOpen(v => !v)}
-                className="w-full flex items-center justify-between p-4 hover:bg-zinc-800/30 transition-colors"
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-100 transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center">
-                        <Target size={14} className="text-red-400" />
+                    <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center">
+                        <Target size={14} className="text-red-500" />
                     </div>
-                    <span className="text-zinc-100 font-semibold text-sm">{rec.topic}</span>
-                    <span className="text-[10px] text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded-full">
+                    <span className="text-gray-900 font-semibold text-sm">{rec.topic}</span>
+                    <span className="text-[10px] text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
                         {rec.recommendedProblems.length} problems
                     </span>
                 </div>
-                {open ? <ChevronUp size={16} className="text-zinc-500" /> : <ChevronDown size={16} className="text-zinc-500" />}
+                {open ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
             </button>
 
             <AnimatePresence>
@@ -114,7 +106,7 @@ function RecommendationCard({ rec }: { rec: TopicRecommendation }) {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="border-t border-zinc-800/60"
+                        className="border-t border-gray-100"
                     >
                         <div className="p-4 space-y-2">
                             {rec.recommendedProblems.map((p, i) => {
@@ -125,16 +117,16 @@ function RecommendationCard({ rec }: { rec: TopicRecommendation }) {
                                         href={p.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-3 p-3 rounded-xl bg-zinc-950/50 hover:bg-zinc-800/50 border border-zinc-800/40 hover:border-zinc-700 transition-all group"
+                                        className="flex items-center gap-3 p-3 rounded-xl bg-white hover:bg-gray-50 border border-gray-100 hover:border-gray-200 transition-all group"
                                     >
                                         <PlatformLogo platform={p.platform} size={16} />
-                                        <span className="flex-1 text-zinc-200 text-sm group-hover:text-white transition-colors truncate">
+                                        <span className="flex-1 text-gray-700 text-sm group-hover:text-gray-900 transition-colors truncate">
                                             {p.name}
                                         </span>
-                                        <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0", diff.bg, diff.color)}>
+                                        <span className={cn("text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0", diff.bg, diff.color)}>
                                             {diff.label}
                                         </span>
-                                        <ExternalLink size={12} className="text-zinc-600 group-hover:text-zinc-400 shrink-0" />
+                                        <ExternalLink size={12} className="text-gray-300 group-hover:text-gray-500 shrink-0" />
                                     </a>
                                 );
                             })}
@@ -146,7 +138,6 @@ function RecommendationCard({ rec }: { rec: TopicRecommendation }) {
     );
 }
 
-// Typewriter for AI text
 function TypewriterText({ text }: { text: string }) {
     const [displayed, setDisplayed] = useState("");
     const [done, setDone] = useState(false);
@@ -163,27 +154,24 @@ function TypewriterText({ text }: { text: string }) {
                 setDone(true);
                 clearInterval(id);
             }
-        }, 8); // ~8ms per char ≈ 125 chars/sec
+        }, 8);
         return () => clearInterval(id);
     }, [text]);
 
     return (
-        <div className="text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap font-mono">
+        <div className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap font-mono">
             {displayed}
             {!done && <span className="animate-pulse">▌</span>}
         </div>
     );
 }
 
-// ──────────────────────────────────────────────────────────────
-//  OVERVIEW STATS ROW
-// ──────────────────────────────────────────────────────────────
 function OverviewStats({ analysis, meta }: { analysis: SkillAnalysis; meta: { totalSolved: number; maxRating: number } }) {
     const stats = [
-        { label: "Total Solved", value: meta.totalSolved, icon: BookOpen, color: "text-blue-400" },
-        { label: "Weak Topics", value: analysis.weakTopics.length, icon: AlertTriangle, color: "text-red-400" },
-        { label: "Peak Rating", value: meta.maxRating, icon: TrendingUp, color: "text-emerald-400" },
-        { label: "Overall Level", value: analysis.overallLevel.charAt(0).toUpperCase() + analysis.overallLevel.slice(1), icon: Shield, color: "text-purple-400" },
+        { label: "Total Solved", value: meta.totalSolved, icon: BookOpen, color: "text-blue-600" },
+        { label: "Weak Topics", value: analysis.weakTopics.length, icon: AlertTriangle, color: "text-red-600" },
+        { label: "Peak Rating", value: meta.maxRating, icon: TrendingUp, color: "text-emerald-600" },
+        { label: "Overall Level", value: analysis.overallLevel.charAt(0).toUpperCase() + analysis.overallLevel.slice(1), icon: Shield, color: "text-purple-600" },
     ];
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -196,11 +184,11 @@ function OverviewStats({ analysis, meta }: { analysis: SkillAnalysis; meta: { to
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.08 }}
                     >
-                        <Card className="bg-zinc-900/40 border-zinc-800">
+                        <Card className="bg-white border border-gray-100 shadow-card">
                             <CardContent className="p-5 flex flex-col items-center justify-center text-center gap-2">
                                 <Icon size={20} className={s.color} />
-                                <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-wider">{s.label}</span>
-                                <span className="text-2xl font-black text-white">{s.value}</span>
+                                <span className="text-gray-400 text-[10px] uppercase font-semibold tracking-wider">{s.label}</span>
+                                <span className="text-2xl font-bold text-gray-900">{s.value}</span>
                             </CardContent>
                         </Card>
                     </motion.div>
@@ -210,9 +198,6 @@ function OverviewStats({ analysis, meta }: { analysis: SkillAnalysis; meta: { to
     );
 }
 
-// ──────────────────────────────────────────────────────────────
-//  MAIN PAGE CONTENT
-// ──────────────────────────────────────────────────────────────
 function AICoachContent() {
     const searchParams = useSearchParams();
     const [usernames, setUsernames] = useState({
@@ -225,7 +210,6 @@ function AICoachContent() {
     const [error, setError] = useState<string | null>(null);
     const [planExpanded, setPlanExpanded] = useState(false);
 
-    // Pre-fill from URL query params (set by Portfolio Tracker button)
     useEffect(() => {
         const lc = searchParams.get("leetcode") || "";
         const cf = searchParams.get("codeforces") || "";
@@ -236,11 +220,9 @@ function AICoachContent() {
             codechef: cc || localStorage.getItem("codechef_user") || "",
         };
         setUsernames(saved);
-        // Auto-fetch if params came from Portfolio Tracker
         if (lc || cf || cc) {
             setTimeout(() => fetchCoachData(saved), 300);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchCoachData = async (u = usernames) => {
@@ -275,48 +257,44 @@ function AICoachContent() {
     const visibleDays = planExpanded ? result?.practicePlan : result?.practicePlan.slice(0, 7);
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-foreground font-[family-name:var(--font-geist-sans)] selection:bg-blue-500/30 relative overflow-x-hidden pt-32">
-            {/* Background grid */}
-            <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [background-size:32px_32px]" />
-            {/* Gradient glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/5 blur-[120px] rounded-full -z-10 pointer-events-none" />
+        <div className="min-h-screen bg-background text-foreground font-[family-name:var(--font-geist-sans)] selection:bg-blue-100 relative overflow-x-hidden pt-28">
+            <div className="absolute inset-0 -z-10 h-full w-full bg-grid-cream"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-100 blur-[100px] rounded-full -z-10 pointer-events-none" />
 
-            <div className="w-full max-w-7xl mx-auto px-6 py-12 flex flex-col items-center gap-12">
+            <div className="w-full max-w-6xl mx-auto px-6 py-10 flex flex-col items-center gap-8">
 
-                {/* ── Header ── */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center space-y-4 max-w-2xl"
+                    className="text-center space-y-3 max-w-xl"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full mb-2">
-                        <Sparkles size={14} className="text-blue-400" />
-                        <span className="text-blue-400 text-xs font-bold uppercase tracking-widest">AI-Powered</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-full mb-2">
+                        <Sparkles size={12} className="text-blue-600" />
+                        <span className="text-blue-600 text-xs font-semibold uppercase tracking-wider">AI Analysis</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-black text-white leading-tight">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
                         Competitive Programming
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"> Coach</span>
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"> Assistant</span>
                     </h1>
-                    <p className="text-zinc-400 text-base leading-relaxed">
+                    <p className="text-gray-500 text-base leading-relaxed">
                         Enter your platform usernames to get a personalised skill analysis,
                         curated problem recommendations, and an AI-generated 30-day plan.
                     </p>
                 </motion.div>
 
-                {/* ── Input Form ── */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="w-full grid grid-cols-1 lg:grid-cols-4 gap-4 bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800 backdrop-blur-sm"
+                    className="w-full grid grid-cols-1 lg:grid-cols-4 gap-4 bg-white p-5 rounded-2xl border border-gray-100 shadow-card"
                 >
                     {(["leetcode", "codeforces", "codechef"] as const).map((p) => (
                         <div key={p} className="space-y-2">
-                            <Label className="text-zinc-400 text-xs uppercase tracking-wider capitalize">{p}</Label>
+                            <Label className="text-gray-500 text-xs uppercase tracking-wider capitalize">{p}</Label>
                             <div className="relative">
-                                <PlatformLogo platform={p} className="absolute left-3 top-2.5 opacity-50" size={16} />
+                                <PlatformLogo platform={p} className="absolute left-3 top-2.5 opacity-40" size={16} />
                                 <Input
-                                    className="pl-9 bg-zinc-950/50 border-zinc-800 text-zinc-200"
+                                    className="pl-9 bg-gray-50 border-gray-200 text-gray-900"
                                     placeholder="Username"
                                     value={usernames[p]}
                                     onChange={(e) => setUsernames({ ...usernames, [p]: e.target.value })}
@@ -329,7 +307,7 @@ function AICoachContent() {
                         <Button
                             onClick={() => fetchCoachData()}
                             disabled={loading}
-                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold shadow-lg shadow-blue-500/20"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                         >
                             {loading ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
@@ -340,28 +318,25 @@ function AICoachContent() {
                     </div>
                 </motion.div>
 
-                {/* ── Error State ── */}
                 {error && !loading && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="w-full flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-400 text-sm"
+                        className="w-full flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm"
                     >
                         <AlertTriangle size={16} className="shrink-0" />
                         {error}
                     </motion.div>
                 )}
 
-                {/* ── Loading skeleton ── */}
                 {loading && (
                     <div className="w-full space-y-6">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="h-40 bg-zinc-900/40 border border-zinc-800/50 rounded-2xl animate-pulse" />
+                            <div key={i} className="h-32 bg-white border border-gray-100 rounded-2xl animate-pulse" />
                         ))}
                     </div>
                 )}
 
-                {/* ── Results ── */}
                 {result && !loading && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -369,27 +344,23 @@ function AICoachContent() {
                         transition={{ duration: 0.4 }}
                         className="w-full space-y-8"
                     >
-                        {/* Overview stats */}
                         <OverviewStats analysis={result.skillAnalysis} meta={result.meta} />
 
-                        {/* Radar + Skill breakdown */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                            {/* ─ Radar Chart ─ */}
-                            <Card className="bg-zinc-900/40 border-zinc-800">
+                            <Card className="bg-white border border-gray-100 shadow-card">
                                 <CardHeader>
-                                    <CardTitle className="text-sm font-medium text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-                                        <Zap size={14} className="text-blue-400" /> Skill Radar
+                                    <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+                                        <Zap size={14} className="text-blue-600" /> Skill Analysis
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="h-[320px]">
+                                <CardContent className="h-[280px]">
                                     {result.skillAnalysis.radarData.length > 0 ? (
                                         <ResponsiveContainer width="100%" height="100%">
                                             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={result.skillAnalysis.radarData}>
-                                                <PolarGrid stroke="#27272a" />
+                                                <PolarGrid stroke="#e5e7eb" />
                                                 <PolarAngleAxis
                                                     dataKey="topic"
-                                                    tick={{ fill: "#71717a", fontSize: 11, fontWeight: 600 }}
+                                                    tick={{ fill: "#6b7280", fontSize: 11, fontWeight: 600 }}
                                                 />
                                                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                                                 <Radar
@@ -401,25 +372,24 @@ function AICoachContent() {
                                                     strokeWidth={2}
                                                 />
                                                 <RechartsTooltip
-                                                    contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "8px" }}
-                                                    itemStyle={{ color: "#fff" }}
+                                                    contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #e5e7eb", borderRadius: "8px" }}
+                                                    itemStyle={{ color: "#1f2937" }}
                                                     formatter={(v: number | undefined) => [`${v ?? 0}/100`, "Skill Score"]}
                                                 />
                                             </RadarChart>
                                         </ResponsiveContainer>
                                     ) : (
-                                        <div className="h-full flex items-center justify-center text-zinc-500 text-sm">
+                                        <div className="h-full flex items-center justify-center text-gray-400 text-sm">
                                             Not enough topic data to render radar chart.
                                         </div>
                                     )}
                                 </CardContent>
                             </Card>
 
-                            {/* ─ Skill level breakdown ─ */}
-                            <Card className="bg-zinc-900/40 border-zinc-800">
+                            <Card className="bg-white border border-gray-100 shadow-card">
                                 <CardHeader>
-                                    <CardTitle className="text-sm font-medium text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-                                        <Target size={14} className="text-purple-400" /> Skill Breakdown
+                                    <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+                                        <Target size={14} className="text-purple-600" /> Skill Breakdown
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-5">
@@ -429,10 +399,10 @@ function AICoachContent() {
                                         return (
                                             <div key={lvl}>
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <span className={cn("text-[10px] font-black uppercase tracking-widest", cfg.color)}>
+                                                    <span className={cn("text-[10px] font-semibold uppercase tracking-wider", cfg.color)}>
                                                         {cfg.label}
                                                     </span>
-                                                    <span className="text-zinc-600 text-xs">({topics.length})</span>
+                                                    <span className="text-gray-400 text-xs">({topics.length})</span>
                                                 </div>
                                                 {topics.length > 0 ? (
                                                     <div className="grid grid-cols-1 gap-1.5">
@@ -440,11 +410,11 @@ function AICoachContent() {
                                                             <SkillBadge key={i} level={lvl} name={t.name} count={t.count} />
                                                         ))}
                                                         {topics.length > 4 && (
-                                                            <p className="text-zinc-600 text-xs pl-1">+{topics.length - 4} more</p>
+                                                            <p className="text-gray-400 text-xs pl-1">+{topics.length - 4} more</p>
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <p className="text-zinc-600 text-xs pl-1">None identified</p>
+                                                    <p className="text-gray-400 text-xs pl-1">None identified</p>
                                                 )}
                                             </div>
                                         );
@@ -453,13 +423,12 @@ function AICoachContent() {
                             </Card>
                         </div>
 
-                        {/* ─ Problem Recommendations ─ */}
                         {result.recommendations.length > 0 && (
-                            <Card className="bg-zinc-900/40 border-zinc-800">
+                            <Card className="bg-white border border-gray-100 shadow-card">
                                 <CardHeader>
-                                    <CardTitle className="text-sm font-medium text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-                                        <BookOpen size={14} className="text-red-400" /> Recommended Problems
-                                        <span className="text-zinc-600 font-normal normal-case text-xs">— focus on your weak topics</span>
+                                    <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+                                        <BookOpen size={14} className="text-red-600" /> Recommended Problems
+                                        <span className="text-gray-400 font-normal normal-case text-xs">— focus on your weak topics</span>
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-3">
@@ -470,18 +439,17 @@ function AICoachContent() {
                             </Card>
                         )}
 
-                        {/* ─ 30-Day Practice Plan ─ */}
-                        <Card className="bg-zinc-900/40 border-zinc-800">
+                        <Card className="bg-white border border-gray-100 shadow-card">
                             <CardHeader>
                                 <div className="flex items-center justify-between">
-                                    <CardTitle className="text-sm font-medium text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-                                        <Calendar size={14} className="text-emerald-400" /> 30-Day Practice Plan
+                                    <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+                                        <Calendar size={14} className="text-emerald-600" /> 30-Day Practice Plan
                                     </CardTitle>
                                     <Button
                                         variant="outline"
                                         size="sm"
                                         onClick={() => setPlanExpanded(v => !v)}
-                                        className="border-zinc-700 text-zinc-400 hover:text-white text-xs"
+                                        className="border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 text-xs"
                                     >
                                         {planExpanded ? "Show Less" : "Show All 30 Days"}
                                     </Button>
@@ -501,49 +469,47 @@ function AICoachContent() {
                                     ))}
                                 </AnimatePresence>
                                 {!planExpanded && result.practicePlan.length > 7 && (
-                                    <p className="text-center text-zinc-600 text-xs pt-2">
+                                    <p className="text-center text-gray-400 text-xs pt-2">
                                         Showing 7 of {result.practicePlan.length} days
                                     </p>
                                 )}
                             </CardContent>
                         </Card>
 
-                        {/* ─ AI Advice Panel ─ */}
-                        <Card className="bg-gradient-to-br from-blue-950/30 to-purple-950/30 border-blue-500/20">
+                        <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-100">
                             <CardHeader>
-                                <CardTitle className="text-sm font-medium text-zinc-300 uppercase tracking-wider flex items-center gap-2">
-                                    <Brain size={14} className="text-blue-400" />
-                                    AI Coach Advice
+                                <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wider flex items-center gap-2">
+                                    <Brain size={14} className="text-blue-600" />
+                                    AI Assistant Advice
                                     {result.aiAdvice.fromCache && (
-                                        <span className="text-[10px] text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded-full normal-case font-normal">
+                                        <span className="text-[10px] text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full normal-case font-normal">
                                             Fallback mode
                                         </span>
                                     )}
                                     {!result.aiAdvice.fromCache && (
-                                        <span className="text-[10px] text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full normal-case font-normal">
-                                            ✦ Gemini 2.0 Flash
+                                        <span className="text-[10px] text-blue-600 bg-blue-100 border border-blue-200 px-2 py-0.5 rounded-full normal-case font-normal">
+                                            Gemini 2.0 Flash
                                         </span>
                                     )}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="p-4 bg-zinc-950/40 rounded-xl border border-zinc-800/60 min-h-[120px]">
+                                <div className="p-4 bg-white rounded-xl border border-gray-100 min-h-[100px]">
                                     <TypewriterText text={result.aiAdvice.text} />
                                 </div>
                                 {result.aiAdvice.error && (
-                                    <p className="mt-2 text-xs text-zinc-600 flex items-center gap-1">
+                                    <p className="mt-2 text-xs text-gray-400 flex items-center gap-1">
                                         <AlertTriangle size={12} /> {result.aiAdvice.error}
                                     </p>
                                 )}
                             </CardContent>
                         </Card>
 
-                        {/* Re-analyze button */}
                         <div className="flex justify-center pt-2 pb-4">
                             <Button
                                 variant="outline"
                                 onClick={() => fetchCoachData()}
-                                className="border-zinc-700 text-zinc-400 hover:text-white"
+                                className="border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                             >
                                 <RefreshCw size={14} className="mr-2" /> Re-Analyze
                             </Button>
@@ -551,19 +517,18 @@ function AICoachContent() {
                     </motion.div>
                 )}
 
-                {/* ── Empty state ── */}
                 {!result && !loading && !error && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="flex flex-col items-center gap-4 py-16 text-center"
+                        className="flex flex-col items-center gap-4 py-14 text-center"
                     >
-                        <div className="w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                            <Brain className="w-9 h-9 text-blue-400" />
+                        <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center">
+                            <Brain className="w-8 h-8 text-blue-600" />
                         </div>
-                        <h3 className="text-xl font-bold text-zinc-200">Ready to Coach You</h3>
-                        <p className="text-zinc-500 max-w-md">
-                            Enter at least one platform username above and click <strong className="text-zinc-300">Analyze My Skills</strong> to get started.
+                        <h3 className="text-lg font-bold text-gray-900">Ready to Coach You</h3>
+                        <p className="text-gray-500 max-w-sm">
+                            Enter at least one platform username above and click <strong className="text-gray-700">Analyze My Skills</strong> to get started.
                         </p>
                     </motion.div>
                 )}
@@ -574,15 +539,12 @@ function AICoachContent() {
     );
 }
 
-// ──────────────────────────────────────────────────────────────
-//  PAGE WRAPPER (For Next.js Suspense requirement)
-// ──────────────────────────────────────────────────────────────
 export default function AICoachPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen bg-zinc-950 flex items-center justify-center pt-32">
-                <div className="flex flex-col items-center gap-4 text-zinc-500">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+            <div className="min-h-screen bg-background flex items-center justify-center pt-32">
+                <div className="flex flex-col items-center gap-4 text-gray-400">
+                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
                     <p className="text-sm">Loading Coach...</p>
                 </div>
             </div>

@@ -12,31 +12,29 @@ export default function Navbar() {
     const pathname = usePathname();
 
     const links = [
-        { name: "Arena", href: "/", icon: Trophy },
+        { name: "Contests", href: "/", icon: Trophy },
         { name: "Hackathons", href: "/hackathons", icon: Calendar },
-        { name: "LeetCode Buddies", href: "/search", icon: Users },
-        { name: "Portfolio Tracker", href: "/stats", icon: BarChart2 },
-        { name: "AI Coach", href: "/ai-coach", icon: Brain },
+        { name: "User Search", href: "/search", icon: Users },
+        { name: "My Stats", href: "/stats", icon: BarChart2 },
+        { name: "AI Assistant", href: "/ai-coach", icon: Brain },
     ];
 
     return (
-        <div className="fixed top-6 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
+        <div className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
             <motion.nav
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", damping: 20, stiffness: 100 }}
-                className="pointer-events-auto flex items-center gap-2 bg-zinc-950/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-2 pr-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5"
+                className="pointer-events-auto flex items-center gap-2 glass-card rounded-[2rem] p-2 pr-2 shadow-card"
             >
-                {/* Logo Section */}
-                <Link href="/" className="flex items-center gap-2 px-3 py-2 hover:bg-white/5 rounded-2xl transition-colors group">
-                    <div className="bg-blue-600 p-1.5 rounded-xl group-hover:rotate-12 transition-transform shadow-lg shadow-blue-500/20">
+                <Link href="/" className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-2xl transition-colors group">
+                    <div className="bg-blue-600 p-1.5 rounded-xl group-hover:rotate-12 transition-transform shadow-md">
                         <BarChart2 className="w-4 h-4 text-white" />
                     </div>
                 </Link>
 
-                <div className="h-6 w-px bg-white/10 mx-1" />
+                <div className="h-6 w-px bg-gray-200 mx-1" />
 
-                {/* Nav Links */}
                 <div className="flex items-center gap-1">
                     {links.map((link) => {
                         const Icon = link.icon;
@@ -47,10 +45,10 @@ export default function Navbar() {
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "px-4 py-2 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2 relative",
+                                    "px-4 py-2 rounded-2xl text-[11px] font-bold uppercase tracking-wider transition-all flex items-center gap-2 relative",
                                     isActive
-                                        ? "text-white"
-                                        : "text-zinc-500 hover:text-white"
+                                        ? "text-gray-900"
+                                        : "text-gray-500 hover:text-gray-900"
                                 )}
                             >
                                 <Icon size={14} />
@@ -58,7 +56,7 @@ export default function Navbar() {
                                 {isActive && (
                                     <motion.div
                                         layoutId="nav-active"
-                                        className="absolute inset-0 bg-white/10 rounded-2xl -z-10 border border-white/10"
+                                        className="absolute inset-0 bg-blue-50 rounded-2xl -z-10 border border-blue-100"
                                     />
                                 )}
                             </Link>
@@ -66,9 +64,8 @@ export default function Navbar() {
                     })}
                 </div>
 
-                <div className="h-6 w-px bg-white/10 mx-1" />
+                <div className="h-6 w-px bg-gray-200 mx-1" />
 
-                {/* Profile Section (No Sync/Theme) */}
                 <div className="flex items-center pl-2">
                     <ProfileLink />
                 </div>
